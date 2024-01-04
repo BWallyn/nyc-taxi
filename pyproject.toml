@@ -1,0 +1,29 @@
+[build-system]
+requires = [ "setuptools",]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nyc_taxi"
+readme = "README.md"
+dynamic = [ "dependencies", "version",]
+
+[project.scripts]
+nyc-taxi = "nyc_taxi.__main__:main"
+
+[tool.kedro]
+package_name = "nyc_taxi"
+project_name = "nyc-taxi"
+kedro_init_version = "0.19.1"
+tools = "[]"
+
+[project.entry-points."kedro.hooks"]
+
+[tool.setuptools.dynamic.dependencies]
+file = "requirements.txt"
+
+[tool.setuptools.dynamic.version]
+attr = "nyc_taxi.__version__"
+
+[tool.setuptools.packages.find]
+where = [ "src",]
+namespaces = false
