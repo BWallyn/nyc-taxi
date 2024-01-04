@@ -26,7 +26,7 @@ def download_dataset_yymm(link: str, year_month: str) -> pd.DataFrame:
     """
     path = f'{link}{year_month}.parquet'
     try:
-        df = pd.read_parquet(path=path)
+        df = pd.read_parquet(path=path, engine="fastparquet")
     except HTTPError as err:
         if err.code == 403:
             print(f'Dataset {year_month} not found')
@@ -77,12 +77,12 @@ def download_all_data(link: str, path_data: str, yyyy_start: int, yyyy_end: int,
     df = pd.DataFrame()
     # Download dataset of each month
     for year_month in list_months:
-        path_file = os.path.join(path_data, f"nyc_taxi_{year_month}.pkl")
-        if not os.path.isfile(path=path_file):
-            df_temp = pd.read_pickle(path_file)
+        path_file = os.path.join(path_data, f"nyc_taxi_{year_month}.parquet")
+        if os.path.isfile(path=path_file):
+            df_temp = pd.read_parquet(path_file, engine="fastparquet")
         else:
             df_temp = download_dataset_yymm(link=link, year_month=year_month)
-            df_temp.to_pickle(os.path.join(path_data, f"nyc_taxi_{year_month}.pkl"))
+            df_temp.to_parquet(path_file, engine="fastparquet")
         df = pd.concat([df, df_temp])
         del df_temp
         gc.collect()
