@@ -15,11 +15,11 @@ from .download_data import download_all_data
 # ==== FUNCTIONS ====
 # ===================
 
-def download_between_dates(link: str, date_start: str, date_end: str) -> pd.DataFrame:
+def download_between_dates(path_tlc: str, date_start: str, date_end: str) -> pd.DataFrame:
     """Download data of NYC taxi trips between two dates
 
     Args:
-        link: Link to the NYC TLC website
+        path_tlc: Link to the NYC TLC website
         date_start: Starting month to download data. Format yyyy-mm
         date_end: Ending month to download data. Format yyyy-mm
     Returns:
@@ -31,7 +31,7 @@ def download_between_dates(link: str, date_start: str, date_end: str) -> pd.Data
     yyyy_end = int(date_end[:4])
     mm_end = int(date_end[5:])
     # Extract data
-    df = download_all_data(link=link, yyyy_start=yyyy_start, yyyy_end=yyyy_end, mm_start=mm_start, mm_end=mm_end)
+    df = download_all_data(link=path_tlc, path_data="./data/01_raw", yyyy_start=yyyy_start, yyyy_end=yyyy_end, mm_start=mm_start, mm_end=mm_end)
     return df
 
 
@@ -66,6 +66,18 @@ def create_duration(df: pd.DataFrame, col_pickup_date: str="tpep_pickup_datetime
     df[col_dropoff_date] = pd.to_datetime(df[col_dropoff_date], errors='coerce')
     # Compute duration
     df['duration'] = (df[col_dropoff_date] - df[col_pickup_date]).dt.total_seconds()
+    return df
+
+
+def delete_dropoff_date(df: pd.DataFrame) -> pd.DataFrame:
+    """Delete the dropoff date feature
+
+    Args:
+        df: DataFrame
+    Returns:
+        df: DataFrame without the dropoff date feat
+    """
+    df = df.drop(columns=["tpep_dropoff_datetime"])
     return df
 
 
