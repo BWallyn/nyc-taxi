@@ -3,18 +3,32 @@
 # Documentation for this file format can be found in "The Data Catalog"
 # Link: https://docs.kedro.org/en/stable/data/data_catalog.html
 
-merged_data:
-  type: pandas.ParquetDataset
-  filepath: data/02_intermediate/nyc_taxi_data.parquet
+# train_split:
+#   # type: pandas.ParquetDataset
+#   type: pickle.PickleDataset
+#   filepath: data/03_primary/train_split.pkl
 
-train_split:
-  type: pandas.ParquetDataset
-  filepath: data/03_primary/train_split.parquet
+# valid_split:
+#   # type: pandas.ParquetDataset
+#   type: pickle.PickleDataset
+#   filepath: data/03_primary/valid_split.pkl
 
-valid_split:
-  type: pandas.ParquetDataset
-  filepath: data/03_primary/valid_split.parquet
+# test_split:
+#   # type: pandas.ParquetDataset
+#   type: pickle.PickleDataset
+#   filepath: data/03_primary/test_split.pkl
 
-test_split:
-  type: pandas.ParquetDataset
-  filepath: data/03_primary/test_split.parquet
+df_train:
+  # type: pandas.ParquetDataset
+  type: pickle.PickleDataset
+  filepath: data/03_primary/df_train.pkl
+
+df_valid:
+  # type: pandas.ParquetDataset
+  type: pickle.PickleDataset
+  filepath: data/03_primary/df_valid.pkl
+
+df_test:
+  # type: pandas.ParquetDataset
+  type: pickle.PickleDataset
+  filepath: data/03_primary/df_test.pkl
