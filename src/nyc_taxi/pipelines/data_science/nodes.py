@@ -8,10 +8,10 @@ generated using Kedro 0.19.1
 
 # Essential
 import numpy as np
-import pandas as pd
 
 # Machine learning
 from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import FunctionTransformer
 
 from .feature_engineering import periodic_spline_transformer
@@ -41,3 +41,21 @@ def column_transformer() -> ColumnTransformer:
         ], remainder='passthrough', verbose_feature_names_out=False,
     )
     return col_transf
+
+
+def feature_imputer():
+    """Create a feature imputer for the missing values
+
+    Returns:
+        feat_imp: Feature imputer element from sklearn
+    """
+    feat_imp = ColumnTransformer(
+        transformers=[
+            ("pass_count", SimpleImputer(strategy="median"), ["passenger_count"]),
+            ("rate_code", SimpleImputer(strategy="most_frequent"), ["RatecodeID"]),
+            ("store_flag", SimpleImputer(strategy="most_frequent"), ["store_and_fwd_flag"]),
+            ("cong_surch", SimpleImputer(strategy="median"), ["congestion_surcharge"]),
+            ("air_fee", SimpleImputer(strategy="most_frequent"), ["airport_fee"]),
+        ], remainder='passthrough', verbose_feature_names_out=False
+    )
+    return feat_imp
