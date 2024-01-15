@@ -51,7 +51,19 @@ def split_train_val_test(df: pd.DataFrame, date_valid_str: str, date_test_str: s
     return df_train, df_valid, df_test
 
 
-def create_duration(df: pd.DataFrame, col_pickup_date: str="tpep_pickup_datetime", col_dropoff_date: str="tpep_dropoff_datetime") -> pd.DataFrame:
+def delete_dropoff_date(df: pd.DataFrame) -> pd.DataFrame:
+    """Delete the dropoff date feature
+
+    Args:
+        df: DataFrame
+    Returns:
+        df: DataFrame without the dropoff date feat
+    """
+    df = df.drop(columns=["tpep_dropoff_datetime"])
+    return df
+
+
+def create_duration(df: pd.DataFrame, col_pickup_date: str="tpep_pickup_datetime", col_dropoff_date: str="tpep_dropoff_datetime") -> tuple[pd.DataFrame, pd.Series]:
     """Add duration time (in s) to the dataset using pickup and dropoff times.
 
     Args:
@@ -66,19 +78,11 @@ def create_duration(df: pd.DataFrame, col_pickup_date: str="tpep_pickup_datetime
     df[col_dropoff_date] = pd.to_datetime(df[col_dropoff_date], errors='coerce')
     # Compute duration
     df['duration'] = (df[col_dropoff_date] - df[col_pickup_date]).dt.total_seconds()
-    return df
-
-
-def delete_dropoff_date(df: pd.DataFrame) -> pd.DataFrame:
-    """Delete the dropoff date feature
-
-    Args:
-        df: DataFrame
-    Returns:
-        df: DataFrame without the dropoff date feat
-    """
-    df = df.drop(columns=["tpep_dropoff_datetime"])
-    return df
+    df = delete_dropoff_date(df)
+    # Extract target
+    y_target = df["duration"]
+    df.drop(columns=["duration"], inplace=True)
+    return df, y_target
 
 
 def create_id(df: pd.DataFrame) -> pd.DataFrame:
