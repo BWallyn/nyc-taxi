@@ -32,3 +32,15 @@ df_test:
   # type: pandas.ParquetDataset
   type: pickle.PickleDataset
   filepath: data/03_primary/df_test.pkl
+
+y_train:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/df_train.pkl
+
+y_valid:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/df_valid.pkl
+
+y_test:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/df_test.pkl
