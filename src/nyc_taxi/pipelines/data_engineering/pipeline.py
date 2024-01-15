@@ -24,37 +24,19 @@ def create_pipeline(**kwargs) -> Pipeline:
         node(
             func=create_duration,
             inputs=["train_split"],
-            outputs="df_train_target",
+            outputs=["df_train", "y_train"],
             name="node_target_train",
         ),
         node(
             func=create_duration,
             inputs=["valid_split"],
-            outputs="df_valid_target",
+            outputs=["df_valid", "y_valid"],
             name="node_target_valid",
         ),
         node(
             func=create_duration,
             inputs=["test_split"],
-            outputs="df_test_target",
+            outputs=["df_test", "y_test"],
             name="node_target_test",
-        ),
-        node(
-            func=delete_dropoff_date,
-            inputs="df_train_target",
-            outputs="df_train",
-            name="node_remove_leak_train",
-        ),
-        node(
-            func=delete_dropoff_date,
-            inputs="df_valid_target",
-            outputs="df_valid",
-            name="node_remove_leak_valid",
-        ),
-        node(
-            func=delete_dropoff_date,
-            inputs="df_test_target",
-            outputs="df_test",
-            name="node_remove_leak_test",
         ),
     ])
