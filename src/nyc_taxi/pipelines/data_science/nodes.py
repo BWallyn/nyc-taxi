@@ -75,7 +75,7 @@ def pipe_estimator(feat_imp: ColumnTransformer, col_transf: ColumnTransformer, p
     Args:
         feat_imp: Feature imputer element
         col_transf: Column transformer element
-        **kwargs: Hyperparameters for the HistGradientBoosting method
+        params_hgbr: Hyperparameters for the HistGradientBoosting method
     Returns:
         estimator: Estimator element from sklearn
     """
@@ -89,8 +89,25 @@ def pipe_estimator(feat_imp: ColumnTransformer, col_transf: ColumnTransformer, p
     return estimator
 
 
+def create_training_set(df_train: pd.DataFrame, df_valid: pd.DataFrame, y_train: pd.Series, y_valid: pd.Series) -> tuple[pd.DataFrame, pd.Series]:
+    """Create a training set by concatenating the given training and validation dataframes and arrays.
+
+    Args:
+        df_train (pd.DataFrame): The training dataframe.
+        df_valid (pd.DataFrame): The validation dataframe.
+        y_train (pd.Series): The training array.
+        y_valid (pd.Series): The validation array.
+    Returns:
+        tuple[pd.DataFrame, pd.Series]: A tuple containing the concatenated dataframe and array.
+    """
+    df_training = pd.concat([df_train, df_valid])
+    y_training = pd.concat([y_train, y_valid])
+    return df_training, y_training
+
+
+
 def train_model(
-    estimator: Pipeline, df_train: pd.DataFrame, df_valid: pd.DataFrame, y_train: np.array, y_valid: np.array, params_hgbr: dict,
+    estimator: Pipeline, df_train: pd.DataFrame, df_valid: pd.DataFrame, y_train: pd.Series, y_valid: pd.Series, params_hgbr: dict,
     api_key: str,
 ) -> Pipeline:
     """
@@ -106,5 +123,5 @@ def train_model(
         "rmse_valid": mean_squared_error(y_true=y_valid, y_pred=pred_valid, squared=False),
     }
     # Log to Comet
-    log_hgbr_model(api_key=api_key, params=params, metrics=metrics, model=estimator, model_name="HistGradientBoostingRegressor_model")
+    log_hgbr_model(api_key=api_key, params=params_hgbr, metrics=metrics, model=estimator, model_name="HistGradientBoostingRegressor_model")
     return estimator
