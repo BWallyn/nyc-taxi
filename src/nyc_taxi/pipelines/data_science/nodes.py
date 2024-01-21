@@ -26,6 +26,14 @@ from .log_model import log_hgbr_model
 # ==== FUNCTIONS ====
 # ===================
 
+def merge_airport_fee(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    """
+    mask_ = df["airport_fee"].isna()
+    df.loc[mask_, 'airport_fee'] = df.loc[mask_, 'Airport_fee']
+    df = df.drop(columns=["Airport_fee"])
+    return df
+
 
 def column_transformer() -> ColumnTransformer:
     """Create a column transformer

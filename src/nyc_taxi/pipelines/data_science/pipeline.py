@@ -5,26 +5,44 @@ generated using Kedro 0.19.1
 
 from kedro.pipeline import node, Pipeline, pipeline
 from .feature_engineering import create_hour_feat
-from .nodes import column_transformer, feature_imputer, pipe_estimator, create_training_set, train_model
+from .nodes import merge_airport_fee, column_transformer, feature_imputer, pipe_estimator, create_training_set, train_model
 
 
 def create_pipeline(**kwargs) -> Pipeline:
     return pipeline([
         node(
+            func=merge_airport_fee,
+            inputs="df_train",
+            outputs="df_train_airport",
+            name="node_merge_airport_fee_train"
+        ),
+        node(
+            func=merge_airport_fee,
+            inputs="df_valid",
+            outputs="df_valid_airport",
+            name="node_merge_airport_fee_valid"
+        ),
+        node(
+            func=merge_airport_fee,
+            inputs="df_test",
+            outputs="df_test_airport",
+            name="node_merge_airport_fee_test"
+        ),
+        node(
             func=create_hour_feat,
-            inputs=["df_train", "params:col_date_hour"],
+            inputs=["df_train_airport", "params:col_date_hour"],
             outputs="df_train_hour",
             name="node_create_hour_train",
         ),
         node(
             func=create_hour_feat,
-            inputs=["df_valid", "params:col_date_hour"],
+            inputs=["df_valid_airport", "params:col_date_hour"],
             outputs="df_valid_hour",
             name="node_create_hour_valid",
         ),
         node(
             func=create_hour_feat,
-            inputs=["df_test", "params:col_date_hour"],
+            inputs=["df_test_airport", "params:col_date_hour"],
             outputs="df_test_hour",
             name="node_create_hour_test",
         ),
