@@ -5,7 +5,7 @@ generated using Kedro 0.19.1
 
 from kedro.pipeline import node, Pipeline, pipeline
 from .feature_engineering import create_hour_feat
-from .nodes import column_transformer, feature_imputer, pipe_estimator, train_model
+from .nodes import column_transformer, feature_imputer, pipe_estimator, create_training_set, train_model
 
 
 def create_pipeline(**kwargs) -> Pipeline:
@@ -13,19 +13,19 @@ def create_pipeline(**kwargs) -> Pipeline:
         node(
             func=create_hour_feat,
             inputs=["df_train", "params:col_date_hour"],
-            outputs=["df_train_hour"],
+            outputs="df_train_hour",
             name="node_create_hour_train",
         ),
         node(
             func=create_hour_feat,
             inputs=["df_valid", "params:col_date_hour"],
-            outputs=["df_valid_hour"],
+            outputs="df_valid_hour",
             name="node_create_hour_valid",
         ),
         node(
             func=create_hour_feat,
             inputs=["df_test", "params:col_date_hour"],
-            outputs=["df_test_hour"],
+            outputs="df_test_hour",
             name="node_create_hour_test",
         ),
         node(
@@ -47,8 +47,14 @@ def create_pipeline(**kwargs) -> Pipeline:
             name="node_pipeline_model",
         ),
         node(
+            func=create_training_set,
+            inputs=["df_train_hour", "df_valid_hour", "y_train", "y_valid"],
+            outputs=["df_training", "y_training"],
+            name="node_create_training"
+        ),
+        node(
             func=train_model,
-            inputs=["model", "df_train_hour", "df_valid_hour", "y_train", "y_valid", "params:params_hgbr", "params:api_key"],
+            inputs=["model", "df_training", "df_test_hour", "y_training", "y_test", "params:params_hgbr", "params:api_key"],
             outputs="model_trained",
             name="node_train_model_and_log",
         ),
