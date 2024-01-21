@@ -35,12 +35,12 @@ df_test:
 
 y_train:
   type: pandas.CSVDataset
-  filepath: data/03_primary/df_train.pkl
+  filepath: data/03_primary/y_train.csv
 
 y_valid:
   type: pandas.CSVDataset
-  filepath: data/03_primary/df_valid.pkl
+  filepath: data/03_primary/y_valid.csv
 
 y_test:
   type: pandas.CSVDataset
-  filepath: data/03_primary/df_test.pkl
+  filepath: data/03_primary/y_test.csv
