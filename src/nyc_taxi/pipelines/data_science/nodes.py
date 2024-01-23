@@ -128,7 +128,7 @@ def train_model(
     # Compute metrics
     metrics = {
         "RMSE_train": mean_squared_error(y_true=y_train, y_pred=pred_train, squared=False),
-        "rmse_valid": mean_squared_error(y_true=y_valid, y_pred=pred_valid, squared=False),
+        "RMSE_valid": mean_squared_error(y_true=y_valid, y_pred=pred_valid, squared=False),
     }
     # Log to Comet
     log_hgbr_model(api_key=api_key, params=params_hgbr, metrics=metrics, model=estimator, model_name="HistGradientBoostingRegressor_model")
