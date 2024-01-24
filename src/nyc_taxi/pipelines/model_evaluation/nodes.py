@@ -11,7 +11,7 @@ import pandas as pd
 
 from sklearn.metrics import mean_squared_error
 
-import seaborn as sns
+import plotly.graph_objects as go
 
 
 # ===================
@@ -32,4 +32,11 @@ def compute_metrics(y_train: np.array, pred_train: np.array, y_test: np.array, p
 def plot_histograms(y_true: np.array, y_pred: np.array) -> None:
     """
     """
-    
+    fig = go.Figure()
+    fig.add_trace(go.Histogram(x=y_true), name='target')
+    fig.add_trace(go.Histogram(x=y_pred), name='prediction')
+    # Overlay both histograms
+    fig.update_layout(barmode='overlay')
+    # Reduce opacity to see both histograms
+    fig.update_traces(opacity=0.75)
+    fig.show()
