@@ -44,3 +44,23 @@ y_valid:
 y_test:
   type: pandas.CSVDataset
   filepath: data/03_primary/y_test.csv
+
+df_training:
+  type: pickle.PickleDataset
+  filepath: data/05_model_input/df_training.pkl
+
+df_test_hour:
+  type: pickle.PickleDataset
+  filepath: data/05_primary/df_test.pkl
+
+y_training:
+  type: pandas.CSVDataset
+  filepath: data/05_model_input/y_training.csv
+
+pred_training:
+  type: pandas.CSVDataset
+  filepath: data/07_model_output/pred_training.csv
+
+model_trained:
+  type: pickle.PickleDataset
+  filepath: data/06_models/model.pkl
