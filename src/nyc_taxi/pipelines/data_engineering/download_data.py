@@ -3,11 +3,15 @@
 # ==== IMPORTS ====
 # =================
 
+# Essential
 import gc
 import os
 from tqdm import tqdm
+
+# Internet
 from urllib.error import HTTPError
 
+# Data science
 import pandas as pd
 
 
