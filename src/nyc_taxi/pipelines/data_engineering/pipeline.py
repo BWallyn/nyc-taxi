@@ -4,7 +4,7 @@ generated using Kedro 0.19.1
 """
 
 from kedro.pipeline import node, Pipeline, pipeline
-from .nodes import download_between_dates, split_train_val_test, create_duration, delete_dropoff_date
+from .nodes import download_between_dates, split_train_val_test, create_duration, download_zones_shapefile
 
 
 def create_pipeline(**kwargs) -> Pipeline:
@@ -39,4 +39,10 @@ def create_pipeline(**kwargs) -> Pipeline:
             outputs=["df_test", "y_test"],
             name="node_target_test",
         ),
+        node(
+            func=download_zones_shapefile,
+            inputs=['params:path_to_save_shape', 'params:link_shape'],
+            outputs=None,
+            name='node_download_shape_file'
+        )
     ])
