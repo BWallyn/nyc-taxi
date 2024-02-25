@@ -6,7 +6,13 @@ generated using Kedro 0.19.1
 # ==== IMPORTS ====
 # =================
 
+# Data science
 import pandas as pd
+
+# Internet
+import io
+import requests
+import zipfile
 
 from .download_data import download_all_data
 
@@ -90,3 +96,13 @@ def create_id(df: pd.DataFrame) -> pd.DataFrame:
     """
     df = df.reset_index(drop=False).rename(columns={"index": "id"})
     return df
+
+
+def download_zones_shapefile(
+    path_to_save_shape: str, link_shape: str='https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip'
+) -> None:
+    """
+    """
+    r = requests.get(link_shape)
+    z = zipfile.ZipFile(io.BytesIO(r.content))
+    z.extractall(path_to_save_shape)
