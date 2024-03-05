@@ -1,5 +1,11 @@
 # New York City TCL trips
 
+## Model
+
+In order to predict the time of the trip, we use a scikit-learn pipeline with a Gradient Boosting model.
+The pipeline of the process is as follow:
+![Process](./reports/kedro-pipeline.png)
+
 
 ## Overview
 
