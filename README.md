@@ -1,5 +1,21 @@
 # New York City TCL trips
 
+## Introduction
+
+The goal of this project is to predict the time of a NYC taxi trip. The data is provided by the [NYC Taxi and Limousine Commission](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page).
+
+## Pipelines
+
+### Data engineering
+
+The data engineering pipeline is designed to download the data from the NYC Taxi and Limousine Commission, split into train, validation and test sets and create the target.
+
+
+### Data science
+
+
+
+
 ## Model
 
 In order to predict the time of the trip, we use a scikit-learn pipeline with a Gradient Boosting model.
