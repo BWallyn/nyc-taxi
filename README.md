@@ -6,6 +6,9 @@ The goal of this project is to predict the time of a NYC taxi trip. The data is 
 
 ## Pipelines
 
+The pipeline of the entire process is:
+![Process](./reports/kedro-pipeline.png)
+
 ### Data engineering
 
 The data engineering pipeline is designed to download the data from the NYC Taxi and Limousine Commission, split into train, validation and test sets and create the target.
@@ -13,14 +16,29 @@ The data engineering pipeline is designed to download the data from the NYC Taxi
 
 ### Data science
 
+The data science pipeline is designed to train the model. The model is a scikit-learn pipeline with a Gradient Boosting model. The process is:
+* Merge both airport variables
+* Create datetime features
+* Create the scikit-learn pipeline: feature imputer, column transformer and the gradient boosting model using HistGradientBoosting
+* Train the model
 
+
+### Model inference
+
+Predict the trip duration using the scikit-learn pipeline.
+
+
+### Model evaluation
+
+Evaluate the performance model. To do so:
+* Compute metrics
+* Plot the histograms of the predictions
 
 
 ## Model
 
 In order to predict the time of the trip, we use a scikit-learn pipeline with a Gradient Boosting model.
-The pipeline of the process is as follow:
-![Process](./reports/kedro-pipeline.png)
+
 
 
 ## Overview
