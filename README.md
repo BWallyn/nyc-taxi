@@ -35,11 +35,6 @@ Evaluate the performance model. To do so:
 * Plot the histograms of the predictions
 
 
-## Model
-
-In order to predict the time of the trip, we use a scikit-learn pipeline with a Gradient Boosting model.
-
-
 
 ## Overview
 
