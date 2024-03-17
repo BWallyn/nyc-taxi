@@ -51,7 +51,7 @@ df_training:
 
 df_test_hour:
   type: pickle.PickleDataset
-  filepath: data/05_primary/df_test.pkl
+  filepath: data/05_model_input/df_test.pkl
 
 y_training:
   type: pandas.CSVDataset
@@ -64,3 +64,7 @@ pred_training:
 model_trained:
   type: pickle.PickleDataset
   filepath: data/06_models/model.pkl
+
+df_training_group_dayofweek_hour:
+  type: pickle.PickleDataset
+  filepath: data/08_reporting/df_training_group_dayofweek_hour.pkl
