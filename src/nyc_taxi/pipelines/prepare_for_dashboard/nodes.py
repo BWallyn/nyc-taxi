@@ -61,8 +61,8 @@ def aggregate_by_day_hour(df: pd.DataFrame, beg_specific_week: str) -> pd.DataFr
     df_group = df.groupby(by=['date_dayofweek', 'date_hour'])\
         .agg({
             'VendorID': 'count',
-            'PULocationID': pd.Series.mode,
-            'DOLocationID': pd.Series.mode,
+            'PULocationID': lambda x: x.value_counts().index[0],
+            'DOLocationID': lambda x: x.value_counts().index[0],
             'passenger_count': 'median',
             'trip_distance': 'mean',
             'payment_type': pd.Series.mode,
