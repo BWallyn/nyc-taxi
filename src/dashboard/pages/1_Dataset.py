@@ -8,7 +8,6 @@ import pandas as pd
 
 # Plots
 import matplotlib.pyplot as plt
-import plotly.figure_factory as ff
 import altair as alt
 
 # App
@@ -23,6 +22,7 @@ def set_parameters():
     """
     """
     st.set_page_config(
+        layout='wide',
         page_title="Dataset",
         page_icon="👋",
     )
@@ -89,7 +89,7 @@ def plot_hist_data(df: pd.DataFrame,) -> None:
         .mark_area(opacity=0.3, color='orange')
         .encode(
             x=alt.X("date_hour:Q",),
-            y=alt.Y("n_trips:Q", stack=None),
+            y=alt.Y("n_trips:Q", stack=None, scale=alt.Scale(nice=False)),
         )
     )
     st.altair_chart(chart, use_container_width=True)
@@ -105,26 +105,15 @@ def create_body(path_data: str, path_target: str, path_data_by_day: str) -> None
     st.markdown("""### Analyze on a specific day of week""")
     # Define slider
     day_selected = select_day()
-    st.write(f"**Whole New York City on {day_selected} day of week")
+    st.write(f"**Whole New York City on {day_selected} day of week:**")
     # Load data
     df = load_data(path_file=path_data_by_day).reset_index(drop=False)
     df = df.loc[df['date_dayofweek'] == day_selected]
     # Display some data
     st.dataframe(df)
     # Display the number of rides per hour
+    st.write(f"**Number of rides per hour on the specific day {day_selected} chosen:**")
     plot_hist_data(df)
-    
-
-    # # Plot the distribution of the distance
-    # plot_histogram(
-    #     df.loc[df['trip_distance'] < 1e2]['trip_distance'].values, name_group=['Trip distance'],
-    #     title="Distribution of the trip distances", x_label="Distance"
-    # )
-    # # Plot the distribution of the target
-    # plot_histogram(
-    #     y_target.loc[(y_target['duration'] < 1e4) & (y_target['duration'] >= 0)].values, name_group=['Trip duration'],
-    #     title="Distribution of the trip durations", x_label="Duration"
-    # )
 
 
 def main():
