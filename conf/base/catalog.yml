@@ -68,3 +68,7 @@ model_trained:
 df_training_group_dayofweek_hour:
   type: pickle.PickleDataset
   filepath: data/08_reporting/df_training_group_dayofweek_hour.pkl
+
+# gdf_shape_locations:
+#   type: kedro_datasets.geopandas.GeoJSONDataset
+#   filepath: data/01_raw/taxi_zones.shp
