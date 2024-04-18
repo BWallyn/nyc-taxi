@@ -35,6 +35,10 @@ Evaluate the performance model. To do so:
 * Plot the histograms of the predictions
 
 
+### Prepare for dashboard
+
+Prepare data for the dashboard.
+
 
 ## Overview
 
