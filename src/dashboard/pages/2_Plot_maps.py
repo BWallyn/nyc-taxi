@@ -40,14 +40,14 @@ def update_query_params_day() -> None:
     """
     """
     day_selected = st.session_state["pickup_day"]
-    st.query_params(pickup_day=day_selected)
+    st.query_params["pickup_day"] = day_selected
 
 
 def update_query_params_hour() -> None:
     """
     """
     hour_selected = st.session_state["pickup_hour"]
-    st.query_params(pickup_hour=hour_selected)
+    st.query_params["pickup_hour"] = hour_selected
 
 
 def select_slider(feat: str, min_slider: int, max_slider: int, title_slider: str, func) -> int:
@@ -121,7 +121,7 @@ def create_body(path_data_by_day: str):
         feat='pickup_day', min_slider=0, max_slider=6, title_slider='Select the day of the week', func=update_query_params_day
     )
     hour_selected = select_slider(
-        feat='pickup_hour', min_slider=0, max_slider=23, title_slider='Select the hour of the week', func=update_query_params_hour
+        feat='pickup_hour', min_slider=0, max_slider=23, title_slider='Select the hour of the day', func=update_query_params_hour
     )
     # Load data
     df = load_data(path_file=path_data_by_day).reset_index(drop=False)

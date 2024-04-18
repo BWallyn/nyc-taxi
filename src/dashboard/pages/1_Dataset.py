@@ -55,7 +55,7 @@ def update_query_params() -> None:
     """
     """
     day_selected = st.session_state["pickup_day"]
-    st.query_params(pickup_day=day_selected)
+    st.query_params["pickup_day"] = day_selected
 
 
 def select_day() -> int:
@@ -70,9 +70,6 @@ def select_day() -> int:
 def plot_histogram(data_to_plot: np.array, name_group: list[str], title: str, x_label: str) -> None:
     """
     """
-    # fig = ff.create_distplot(data_to_plot, name_group)
-    # Plot
-    # st.plotly_chart(fig, use_container_width=True)
     fig, ax = plt.subplots()
     ax.hist(data_to_plot, bins=100)
     ax.set_title(title)
