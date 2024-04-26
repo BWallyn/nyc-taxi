@@ -5,6 +5,7 @@
 # Data science
 import numpy as np
 import pandas as pd
+import geopandas as gpd
 
 # Plots
 import matplotlib.pyplot as plt
@@ -12,6 +13,13 @@ import pydeck as pdk
 
 # App
 import streamlit as st
+
+
+# Options
+LA_GUARDIA = [40.7900, -73.8700]
+JFK = [40.6650, -73.7821]
+NEWARK = [40.7090, -74.1805]
+ZOOM_LEVEL = 12
 
 
 # ===================
@@ -63,16 +71,14 @@ def select_slider(feat: str, min_slider: int, max_slider: int, title_slider: str
 def load_data(path_file: str) -> pd.DataFrame:
     """
     """
-    df = pd.read_pickle(path_file)
-    return df
+    gdf = gpd.read_file(path_file)
+    return gdf
 
 
-@st.cache_resource
 def select_day_hour(df: pd.DataFrame, day_sel: int, hour_sel: int) -> pd.DataFrame:
     """
     """
-    df.loc[(df['date_dayofweek'] == day_sel) & (df['date_hour'] == hour_sel)]
-    return df
+    return df.loc[(df['date_dayofweek'] == day_sel) & (df['date_hour'] == hour_sel)]
 
 
 def map(data: pd.DataFrame, lat, lon, zoom) -> None:
@@ -89,14 +95,14 @@ def map(data: pd.DataFrame, lat, lon, zoom) -> None:
             },
             layers=[
                 pdk.Layer(
-                    "HexagonLayer",
+                    "GeoJsonLayer",
                     data=data,
-                    get_position=["lon", "lat"],
-                    radius=100,
-                    elevation_scale=4,
-                    elevation_range=[0, 1000],
-                    pickable=True,
-                    extruded=True,
+                    get_position=["Geometry"],
+                    # radius=100,
+                    # elevation_scale=4,
+                    # elevation_range=[0, 1000],
+                    # pickable=True,
+                    # extruded=True,
                 ),
             ],
         )
@@ -124,8 +130,13 @@ def create_body(path_data_by_day: str):
         feat='pickup_hour', min_slider=0, max_slider=23, title_slider='Select the hour of the day', func=update_query_params_hour
     )
     # Load data
-    df = load_data(path_file=path_data_by_day).reset_index(drop=False)
-    select_day_hour(df=df, day_sel=day_selected, hour_sel=hour_selected)
+    df = load_data(path_file=path_data_by_day)
+    df_sel = select_day_hour(df=df, day_sel=day_selected, hour_sel=hour_selected)
+    # Plot maps of the number of trips per hour
+    cols_for_map = ['n_trips', 'geometry']
+    # JFK Airport
+    st.write("**JFK Airport**")
+    map(df_sel[cols_for_map], JFK[0], JFK[1], ZOOM_LEVEL)
 
 
 
@@ -134,7 +145,7 @@ def main():
     """
     set_parameters()
     create_heading()
-    create_body(path_data_by_day='data/08_reporting/df_training_group_dayofweek_hour.pkl')
+    create_body(path_data_by_day='data/08_reporting/df_training_group_dayofweek_hour_w_geo.geojson')
 
 
 # =============
