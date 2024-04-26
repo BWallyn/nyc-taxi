@@ -114,6 +114,8 @@ def add_geographical_info_pickup(df: pd.DataFrame, gdf: gpd.GeoDataFrame) -> gpd
     Returns:
         gdf: Output dataframe with the geographical info
     """
+    df.reset_index(drop=False, inplace=True)
+    cols = df.columns.tolist() + gdf.columns.tolist()
     # Merge geographical info
-    gdf = df.merge(gdf, left_on='PULocationID', right_on='LocationID', how='left')
-    return gdf
+    gdf = gdf.merge(df, left_on='LocationID', right_on='PULocationID', how='inner')
+    return gdf[cols]
