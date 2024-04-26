@@ -4,5 +4,11 @@ jupyterlab_server>=2.11.1, <2.16.0
 jupyterlab~=3.0, <3.6.0
 jupyter~=1.0
 kedro-telemetry>=0.3.1
-kedro~=0.19.1
+kedro~=0.19.5
+kedro-datasets~=3.0.0
+kedro-viz~=9.0.0
+matplotlib~=3.8.3
+pandas~=2.2.1
+pyarrow~=15.0.0
+scikit-learn~=1.4.1
 traitlets<5.10.0
