@@ -19,7 +19,10 @@ import streamlit as st
 LA_GUARDIA = [40.7900, -73.8700]
 JFK = [40.6650, -73.7821]
 NEWARK = [40.7090, -74.1805]
+MANHATTAN = [40.7766, -73.9713]
 ZOOM_LEVEL = 12
+
+WHITE, ORANGE = (255, 255, 255), (255, 128, 0)
 
 
 # ===================
@@ -84,29 +87,49 @@ def select_day_hour(df: pd.DataFrame, day_sel: int, hour_sel: int) -> pd.DataFra
 def map(data: pd.DataFrame, lat, lon, zoom) -> None:
     """
     """
-    st.write(
-        pdk.Deck(
-            map_style="mapbox://styles/mapbox/light-v9",
-            initial_view_state={
-                "latitude": lat,
-                "longitude": lon,
-                "zoom": zoom,
-                "pitch": 50,
-            },
-            layers=[
-                pdk.Layer(
-                    "GeoJsonLayer",
-                    data=data,
-                    get_position=["Geometry"],
-                    # radius=100,
-                    # elevation_scale=4,
-                    # elevation_range=[0, 1000],
-                    # pickable=True,
-                    # extruded=True,
-                ),
-            ],
-        )
+    def pseudocolor(val, minval, maxval, startcolor, stopcolor):
+        """
+        Convert value in the range minval...maxval to a color in the range
+        startcolor to stopcolor. The colors passed and the the one returned are
+        composed of a sequence of N component values.
+
+        Credits to https://stackoverflow.com/a/10907855
+        """
+        f = float(val-minval) / (maxval-minval)
+        return tuple(f*(b-a)+a for (a, b) in zip(startcolor, stopcolor))
+    
+    # Prepare options plot
+    max_rides, min_rides = data['n_trips'].max(), data['n_trips'].min()
+    data['fill_color'] = data['n_trips'].apply(lambda x: pseudocolor(x, min_rides, max_rides, WHITE, ORANGE))
+    # Plot
+    initial_view_state = {
+        "latitude": lat,
+        "longitude": lon,
+        "zoom": zoom,
+        "pitch": 50,
+    }
+    layer = pdk.Layer(
+        "ColumnLayer",
+        data=data,
+        get_position=["Lon", "Lat"],
+        get_elevation=['n_trips'],
+        auto_highlight=True,
+        radius=50,
+        elevation_scale=10,
+        get_fill_color="fill_color",
+        get_line_color=[255, 255, 255],
+        pickable=True,
+        extruded=True,
+        coverage=1,
     )
+    tooltip = {"html": "<b>Zone:</b> {zone} <br /> <b>Number of trips: </b> {n_trips}"}
+    r = pdk.Deck(
+        map_style="mapbox://styles/mapbox/light-v9",
+        initial_view_state=initial_view_state,
+        layers=[layer],
+        tooltip=tooltip
+    )
+    st.pydeck_chart(r)
 
 
 @st.cache_data
@@ -133,10 +156,9 @@ def create_body(path_data_by_day: str):
     df = load_data(path_file=path_data_by_day)
     df_sel = select_day_hour(df=df, day_sel=day_selected, hour_sel=hour_selected)
     # Plot maps of the number of trips per hour
-    cols_for_map = ['n_trips', 'geometry']
-    # JFK Airport
-    st.write("**JFK Airport**")
-    map(df_sel[cols_for_map], JFK[0], JFK[1], ZOOM_LEVEL)
+    cols_for_map = ['n_trips', 'Lon', 'Lat', 'zone']
+    # Plot
+    map(df_sel[cols_for_map], MANHATTAN[0], MANHATTAN[1], ZOOM_LEVEL)
 
 
 
