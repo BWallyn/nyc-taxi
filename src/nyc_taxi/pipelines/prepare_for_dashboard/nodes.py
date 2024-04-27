@@ -105,6 +105,38 @@ def load_geographical_dataframe(path_geo: str) -> gpd.GeoDataFrame:
     return gpd.read_file(path_geo)
 
 
+def convert_crs(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """
+    """
+    return gdf.to_crs(4326)
+
+
+def get_representative_points(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """Get a representative point of each polygon
+
+    Args:
+        gdf: Input geopandas dataframe
+    Returns:
+        gdf: Output geopandas dataframe with representative point
+    """
+    gdf['rep_point'] = gdf['geometry'].representative_point()
+    return gdf
+
+
+def get_lon_lat(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """Get longitude and latitude info
+    
+    Args:
+        gdf: Input geopandas dataframe
+    Returns:
+        gdf: Output geopandas dataframe with longitude and latitude extracted
+    """
+    gdf['Lon'] = gdf['rep_point'].x
+    gdf['Lat'] = gdf['rep_point'].y
+    gdf = gdf.drop(columns=["rep_point"])
+    return gdf
+
+
 def add_geographical_info_pickup(df: pd.DataFrame, gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     """Add geographical info from geopandas dataframe
 
