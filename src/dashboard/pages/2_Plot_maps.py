@@ -30,7 +30,7 @@ WHITE, ORANGE = (255, 255, 255), (255, 128, 0)
 # ===================
 
 def set_parameters():
-    """
+    """Set the parameters of page.
     """
     st.set_page_config(
         layout='wide',
@@ -48,46 +48,73 @@ def create_heading() -> None:
 
 
 def update_query_params_day() -> None:
-    """
+    """Update the query parameters for the day selected
     """
     day_selected = st.session_state["pickup_day"]
     st.query_params["pickup_day"] = day_selected
 
 
 def update_query_params_hour() -> None:
-    """
+    """Update the query parameters for the hour selected
     """
     hour_selected = st.session_state["pickup_hour"]
     st.query_params["pickup_hour"] = hour_selected
 
 
 def select_slider(feat: str, min_slider: int, max_slider: int, title_slider: str, func) -> int:
+    """Slider to select a value.
+
+    Args:
+        feat (str): Feature of the slider
+        min_slider (int): Minimum value of the slider
+        max_slider (int): Maximum value of the slider
+        title_slider (str): Title of the slider
+        func: Function to update the slider value
+    Return:
+        (int): Value selected in the slider
     """
-    """
-    val_selected = st.slider(
+    return st.slider(
         title_slider, min_slider, max_slider, key=feat, on_change=func
     )
-    return val_selected
 
 
 @st.cache_resource
 def load_data(path_file: str) -> pd.DataFrame:
+    """Load the geopandas dataframe
+
+    Args:
+        path_file (str): Path to the geopandas dataframe file
+    Returns:
+        (gpd.GeoDataFrame): Geopandas dataframe
     """
-    """
-    gdf = gpd.read_file(path_file)
-    return gdf
+    return gpd.read_file(path_file)
 
 
 def select_day_hour(df: pd.DataFrame, day_sel: int, hour_sel: int) -> pd.DataFrame:
-    """
+    """Filter the dataframe on the day and hour selected
+
+    Args:
+        df (pd.DataFrame): Input dataframe
+        day_sel (int): Number of the day of the week selected
+        hour_sel (int): Hour of the day selected
+    Returns:
+        (pd.DataFrame): Filtered dataframe
     """
     return df.loc[(df['date_dayofweek'] == day_sel) & (df['date_hour'] == hour_sel)]
 
 
 def map(data: pd.DataFrame, lat, lon, zoom) -> None:
+    """Create the map representing the number of trips of the selected day and hour
+
+    Args:
+        data (pd.DataFrame): Input dataframe
+        lat (float): Latitude of the center of the map
+        lon (float): Longitude of the center of the map
+        zoom (int): Zoom of the map
     """
-    """
-    def pseudocolor(val, minval, maxval, startcolor, stopcolor):
+    def pseudocolor(
+        val: float, minval: float, maxval: float, startcolor: tuple, stopcolor: tuple
+    ):
         """
         Convert value in the range minval...maxval to a color in the range
         startcolor to stopcolor. The colors passed and the the one returned are
@@ -137,8 +164,10 @@ def mpoint(lat: np.array, lon: np.array) -> tuple:
     """Calculate the midpoint for a given set of data.
 
     Args:
-        lat: List of latitudes
-        lon: List of longitudes
+        lat (np.array): List of latitudes
+        lon (np.array): List of longitudes
+    Returns:
+        (tuple): Average latitude and longitude
     """
     return (np.average(lat), np.average(lon))
 
