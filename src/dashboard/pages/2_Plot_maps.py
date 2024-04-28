@@ -8,7 +8,6 @@ import pandas as pd
 import geopandas as gpd
 
 # Plots
-import matplotlib.pyplot as plt
 import pydeck as pdk
 
 # App
