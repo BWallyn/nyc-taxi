@@ -186,6 +186,7 @@ def create_body(path_data_by_day: str):
     # Plot maps of the number of trips per hour
     cols_for_map = ['n_trips', 'Lon', 'Lat', 'zone']
     # Plot
+    st.write(f"**Number of rides on the specific day {day_selected} and hour {hour_selected} chosen:**")
     map(df_sel[cols_for_map], MANHATTAN[0], MANHATTAN[1], ZOOM_LEVEL)
 
 
