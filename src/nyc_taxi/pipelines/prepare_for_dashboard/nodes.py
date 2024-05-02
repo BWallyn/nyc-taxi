@@ -151,3 +151,49 @@ def add_geographical_info_pickup(df: pd.DataFrame, gdf: gpd.GeoDataFrame) -> gpd
     # Merge geographical info
     gdf = gdf.merge(df, left_on='LocationID', right_on='PULocationID', how='inner')
     return gdf[cols]
+
+
+def aggregate_by_location_hour(df: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate the dataframe by location and hour
+
+    Args:
+        df (pd.DataFrame): Input dataframe
+    Returns:
+        df_group (pd.DataFrame): Output dataframe
+    """
+    df_group = df.groupby(by=[df['PULocationID'], df['tpep_pickup_datetime'].dt.hour])\
+        .agg({
+            'VendorID': 'count',
+            'DOLocationID': lambda x: x.value_counts().index[0],
+            'passenger_count': 'median',
+            'trip_distance': 'mean',
+            'payment_type': lambda x: x.value_counts().index[0],
+            'fare_amount': 'mean',
+            'extra': 'mean',
+            'mta_tax': 'median',
+            'tip_amount': 'mean',
+            'tolls_amount': 'mean',
+            'improvement_surcharge': 'median',
+            'total_amount': 'mean',
+            'congestion_surcharge': 'mean',
+            'airport_fee': 'mean',
+        })
+    df_group = df_group.rename(columns={'VendorID': 'n_trips'})
+    return df_group.reset_index(drop=False)
+
+
+def add_location_name(df: pd.DataFrame, gdf: gpd.GeoDataFrame) -> pd.DataFrame:
+    """Add the location name to the dataframe
+
+    Args:
+        df (pd.DataFrame): Input dataframe
+        gdf (gpd.GeoDataFrame): Geodataframe with the info of the location
+    Returns:
+        (pd.DataFrame): Output dataframe with zone name
+    """
+    return df.merge(
+        gdf[['LocationID', 'zone', 'borough']],
+        left_on='PULocationID',
+        right_on='LocationID',
+        how='inner'
+    )
