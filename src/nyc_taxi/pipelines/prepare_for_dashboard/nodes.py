@@ -161,7 +161,15 @@ def aggregate_by_location_hour(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         df_group (pd.DataFrame): Output dataframe
     """
-    df_group = df.groupby(by=[df['PULocationID'], df['tpep_pickup_datetime'].dt.hour])\
+    df = df.loc[df['tpep_pickup_datetime'] > pd.to_datetime('2023-01-01')]
+    df = df.assign(
+        pickup_day = df['tpep_pickup_datetime'].dt.date,
+        pickup_hour = df['tpep_pickup_datetime'].dt.hour
+    )
+    df.drop(columns=['tpep_pickup_datetime'], inplace=True)
+    df_group = df.groupby(by=[
+        'PULocationID', 'pickup_day', 'pickup_hour'
+    ])\
         .agg({
             'VendorID': 'count',
             'DOLocationID': lambda x: x.value_counts().index[0],
@@ -179,7 +187,13 @@ def aggregate_by_location_hour(df: pd.DataFrame) -> pd.DataFrame:
             'airport_fee': 'mean',
         })
     df_group = df_group.rename(columns={'VendorID': 'n_trips'})
-    return df_group.reset_index(drop=False)
+    df_group = df_group.reset_index(drop=False)
+    df_group['pickup_day'] = pd.to_datetime(df_group['pickup_day'])
+    df_group['pickup_datetime'] = pd.to_datetime(
+        df_group['pickup_day'].dt.strftime('%Y-%m-%d') + ' ' + df_group['pickup_hour'].astype(str), format='%Y-%m-%d %H'
+    )
+    df_group.drop(columns=['pickup_day', 'pickup_hour'])
+    return df_group
 
 
 def add_location_name(df: pd.DataFrame, gdf: gpd.GeoDataFrame) -> pd.DataFrame:
