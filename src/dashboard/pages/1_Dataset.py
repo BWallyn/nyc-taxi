@@ -122,7 +122,7 @@ def plot_one_sample(
     fig = go.Figure()
     title = f'Number of trip per hour for {location_ex}'
     fig = px.line(
-        x=df['tpep_pickup_datetime'],
+        x=df['pickup_datetime'],
         y=df['n_trips'],
         template='plotly_dark',
         markers=True,
