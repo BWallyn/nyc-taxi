@@ -22,5 +22,3 @@ params_hgbr: {
   "categorical_features": ["VendorID", "RatecodeID", "store_and_fwd_flag", "PULocationID", "DOLocationID", "payment_type"],
   "random_state": 12,
 }
-
-path_shape_locations: 'data/01_raw/taxi_zones/taxi_zones.shp'
