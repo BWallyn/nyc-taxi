@@ -2,10 +2,6 @@
 # ==== IMPORTS ====
 # =================
 
-# Data science
-import numpy as np
-import pandas as pd
-
 # App
 import streamlit as st
 
