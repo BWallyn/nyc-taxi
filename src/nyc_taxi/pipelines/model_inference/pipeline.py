@@ -8,17 +8,22 @@ from .nodes import model_predict
 
 
 def create_pipeline(**kwargs) -> Pipeline:
-    return pipeline([
-        node(
-            func=model_predict,
-            inputs=["df_training", "model_trained"],
-            outputs="pred_training",
-            name="node_model_predict_training",
-        ),
-        node(
-            func=model_predict,
-            inputs=["df_test_hour", "model_trained"],
-            outputs="pred_test",
-            name="node_model_predict_test",
-        ),
-    ])
+    return pipeline(
+            [
+            node(
+                func=model_predict,
+                inputs=["df_training", "model_trained"],
+                outputs="pred_training",
+                name="node_model_predict_training",
+            ),
+            node(
+                func=model_predict,
+                inputs=["df_test_hour", "model_trained"],
+                outputs="pred_test",
+                name="node_model_predict_test",
+            ),
+        ],
+        inputs=["df_training", "model_trained", "df_test_hour"],
+        outputs=["pred_training", "pred_test"],
+        namespace="model_inference"
+    )
