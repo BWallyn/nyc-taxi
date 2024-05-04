@@ -1,0 +1,19 @@
+# This is a boilerplate parameters config generated for pipeline 'data_engineering'
+# using Kedro 0.19.1.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://docs.kedro.org/en/0.19.1/configuration/parameters.html
+
+create_dataset.path_tlc: "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_"
+
+create_dataset.date_start: "2023-01"
+
+create_dataset.date_end: "2023-04"
+
+create_dataset.date_valid_str: "2023-03"
+
+create_dataset.date_test_str: "2023-04"
+
+create_dataset.link_shape: 'https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip'
+
+create_dataset.path_to_save_shape: 'data/01_raw/'
