@@ -15,4 +15,4 @@ data_science.params_hgbr: {
   "random_state": 12,
 }
 
-data_science.api_key: "uhJocSkaU9z4qAJUP3Oe4OYrF"
+data_science.api_key: 
