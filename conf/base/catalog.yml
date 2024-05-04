@@ -18,52 +18,56 @@
 #   type: pickle.PickleDataset
 #   filepath: data/03_primary/test_split.pkl
 
-create_dataset.df_train:
+df_train:
   # type: pandas.ParquetDataset
   type: pickle.PickleDataset
   filepath: data/03_primary/df_train.pkl
 
-create_dataset.df_valid:
+df_valid:
   # type: pandas.ParquetDataset
   type: pickle.PickleDataset
   filepath: data/03_primary/df_valid.pkl
 
-create_dataset.df_test:
+df_test:
   # type: pandas.ParquetDataset
   type: pickle.PickleDataset
   filepath: data/03_primary/df_test.pkl
 
-create_dataset.y_train:
+y_train:
   type: pandas.CSVDataset
   filepath: data/03_primary/y_train.csv
 
-create_dataset.y_valid:
+y_valid:
   type: pandas.CSVDataset
   filepath: data/03_primary/y_valid.csv
 
-create_dataset.y_test:
+y_test:
   type: pandas.CSVDataset
   filepath: data/03_primary/y_test.csv
 
-create_model.df_training:
+df_training:
   type: pickle.PickleDataset
   filepath: data/05_model_input/df_training.pkl
 
-create_model.df_test_hour:
+df_test_hour:
   type: pickle.PickleDataset
   filepath: data/05_model_input/df_test.pkl
 
-create_model.y_training:
+y_training:
   type: pandas.CSVDataset
   filepath: data/05_model_input/y_training.csv
 
-model_inference.pred_training:
+model_trained:
+  type: pickle.PickleDataset
+  filepath: data/06_models/model.pkl
+
+pred_training:
   type: pandas.CSVDataset
   filepath: data/07_model_output/pred_training.csv
 
-create_model.model_trained:
-  type: pickle.PickleDataset
-  filepath: data/06_models/model.pkl
+pred_test:
+  type: pandas.CSVDataset
+  filepath: data/07_model_output/pred_test.csv
 
 prepare_data_for_dashboard.df_training_group_dayofweek_hour:
   type: pickle.PickleDataset
