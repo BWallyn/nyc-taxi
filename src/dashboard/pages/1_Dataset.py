@@ -53,33 +53,6 @@ def load_target(path_file: str) -> pd.Series:
     return y_target
 
 
-def update_query_params() -> None:
-    """
-    """
-    day_selected = st.session_state["pickup_day"]
-    st.query_params["pickup_day"] = day_selected
-
-
-def select_day() -> int:
-    """
-    """
-    day_selected = st.slider(
-        "Select day of pickup", 0, 6, key="pickup_day", on_change=update_query_params
-    )
-    return day_selected
-
-
-def plot_histogram(data_to_plot: np.array, name_group: list[str], title: str, x_label: str) -> None:
-    """
-    """
-    fig, ax = plt.subplots()
-    ax.hist(data_to_plot, bins=100)
-    ax.set_title(title)
-    ax.set_xlabel(x_label)
-    ax.set_ylabel("Distribution")
-    st.pyplot(fig)
-
-
 def create_selectbox(tuple_locations: tuple[str]) -> str:
     """Create a selectbox for the locations to display
 
@@ -131,40 +104,14 @@ def plot_one_sample(
     return fig
 
 
-def plot_hist_data(df: pd.DataFrame,) -> None:
-    """
-    """
-    chart = (
-        alt.Chart(df)
-        .mark_area(opacity=0.3, color='orange')
-        .encode(
-            x=alt.X("date_hour:Q",),
-            y=alt.Y("n_trips:Q", stack=None, scale=alt.Scale(nice=False)),
-        )
-    )
-    st.altair_chart(chart, use_container_width=True)
-
-
 def create_body(path_data: str, path_target: str, path_data_by_day: str) -> None:
     """Create the body of the app
     """
     st.header("The dataset")
-    # st.markdown()
-    
-    # ---- Plot on specific day ----
-    st.markdown("""### Analyze on a specific day of week""")
-    # Define slider
-    day_selected = select_day()
-    st.write(f"**Whole New York City on {day_selected} day of week:**")
-    # Load data
-    df = load_data(path_file=path_data_by_day).reset_index(drop=False)
-    df = df.loc[df['date_dayofweek'] == day_selected]
-    # Display some data
-    st.dataframe(df)
-    # Display the number of rides per hour
-    st.write(f"**Number of rides per hour on the specific day {day_selected} chosen:**")
-    plot_hist_data(df)
-    # Diplay the number of rides
+
+    # ---- Display the number of rides ----
+    # Diplay the number of rides for specific place
+    st.write("**Display the number of rides for a specific place:**")
     df = load_data(path_file='data/08_reporting/df_training_group_location_datetime.pkl')
     tuple_locations = tuple(set(df['zone'].values))
     location_sel = create_selectbox(tuple_locations=tuple_locations)
