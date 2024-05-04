@@ -53,5 +53,5 @@ def create_pipeline(**kwargs) -> Pipeline:
             "df_valid", "y_valid",
             "df_test", "y_test"
         ],
-        namespace="create_dataset"
+        namespace="data_engineering"
     )
