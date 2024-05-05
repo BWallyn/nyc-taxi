@@ -11,6 +11,7 @@ from .nodes import (
     get_representative_points,
     get_lon_lat,
     add_geographical_info_pickup,
+    add_target_col,
     aggregate_by_location_hour,
     add_location_name
 )
@@ -56,8 +57,14 @@ def create_pipeline(**kwargs) -> Pipeline:
                 name="node_add_geographical_info"
             ),
             node(
+                func=add_target_col,
+                inputs=["df_training", "y_training"],
+                outputs="df_training_w_duration",
+                name="Add_duration_to_dataset"
+            ),
+            node(
                 func=aggregate_by_location_hour,
-                inputs="df_training",
+                inputs="df_training_w_duration",
                 outputs="df_training_group_location_date",
                 name="Aggregate_by_location_datetime"
             ),
@@ -68,6 +75,6 @@ def create_pipeline(**kwargs) -> Pipeline:
                 name="Add_zone_name"
             )
         ],
-        inputs="df_training",
+        inputs=["df_training", "y_training"],
         namespace="prepare_data_for_dashboard"
     )

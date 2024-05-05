@@ -153,6 +153,19 @@ def add_geographical_info_pickup(df: pd.DataFrame, gdf: gpd.GeoDataFrame) -> gpd
     return gdf[cols]
 
 
+def add_target_col(df: pd.DataFrame, y_target: pd.DataFrame) -> pd.DataFrame:
+    """Add target to the dataframe
+
+    Args:
+        df (pd.DataFrame): Input dataframe
+        y_target (pd.Series): Target
+    Returns:
+        df (pd.DataFrame): Output dataframe with target
+    """
+    df['duration'] = y_target['duration'].values
+    return df
+
+
 def aggregate_by_location_hour(df: pd.DataFrame) -> pd.DataFrame:
     """Aggregate the dataframe by location and hour
 
@@ -185,6 +198,7 @@ def aggregate_by_location_hour(df: pd.DataFrame) -> pd.DataFrame:
             'total_amount': 'mean',
             'congestion_surcharge': 'mean',
             'airport_fee': 'mean',
+            'duration': 'mean',
         })
     df_group = df_group.rename(columns={'VendorID': 'n_trips'})
     df_group = df_group.reset_index(drop=False)
