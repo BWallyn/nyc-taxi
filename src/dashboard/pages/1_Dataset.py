@@ -3,14 +3,11 @@
 # =================
 
 # Data science
-import numpy as np
 import pandas as pd
 
 # Plots
-import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
-import altair as alt
 
 # App
 import streamlit as st
@@ -53,6 +50,20 @@ def load_target(path_file: str) -> pd.Series:
     return y_target
 
 
+@st.cache_data
+def aggregate_all_locations(df: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate values of all locations
+
+    Args:
+        df (pd.DataFrame): Input dataFrame
+    Returns:
+        df_group (pd.DataFrame): Output dataframe
+    """
+    df_group = df.groupby(by=["pickup_datetime"])['n_trips'].sum()
+    df_group = df_group.reset_index(drop=False)
+    return df_group
+
+
 def create_selectbox(tuple_locations: tuple[str]) -> str:
     """Create a selectbox for the locations to display
 
@@ -80,7 +91,7 @@ def select_location(df: pd.DataFrame, location_ex: str) -> pd.DataFrame:
     return df.loc[df["zone"] == location_ex]
 
 
-def plot_one_sample(
+def plot_n_rides_per_hour(
     df: pd.DataFrame, location_ex: str,
 ) -> go.Figure:
     """Plot the number of trips in the time on a specific location
@@ -110,13 +121,20 @@ def create_body(path_data: str, path_target: str, path_data_by_day: str) -> None
     st.header("The dataset")
 
     # ---- Display the number of rides ----
+    df = load_data(path_file='data/08_reporting/df_training_group_location_datetime.pkl')
+
+    # Display the number of rides for all places
+    df_all = aggregate_all_locations(df)
+    st.write("**Display the number of rides for NYC:**")
+    fig = plot_n_rides_per_hour(df_all, location_ex="NYC")
+    st.plotly_chart(fig, theme="streamlit", use_container_width=True, width=1000)
+
     # Diplay the number of rides for specific place
     st.write("**Display the number of rides for a specific place:**")
-    df = load_data(path_file='data/08_reporting/df_training_group_location_datetime.pkl')
     tuple_locations = tuple(set(df['zone'].values))
     location_sel = create_selectbox(tuple_locations=tuple_locations)
     df_sel = select_location(df, location_ex=location_sel)
-    fig = plot_one_sample(df_sel, location_ex=location_sel)
+    fig = plot_n_rides_per_hour(df_sel, location_ex=location_sel)
     st.plotly_chart(fig, theme="streamlit", use_container_width=True, width=1000)
 
 
