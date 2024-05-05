@@ -52,7 +52,8 @@ def load_target(path_file: str) -> pd.Series:
 
 @st.cache_data
 def aggregate_all_locations(df: pd.DataFrame) -> pd.DataFrame:
-    """Aggregate values of all locations
+    """Aggregate values of all locations.
+    All rows are grouped by the datetime hour and sum the number of trips
 
     Args:
         df (pd.DataFrame): Input dataFrame
