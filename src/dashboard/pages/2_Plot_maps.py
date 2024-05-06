@@ -76,6 +76,34 @@ def select_slider(feat: str, min_slider: int, max_slider: int, title_slider: str
         title_slider, min_slider, max_slider, key=feat, on_change=func
     )
 
+def select_selectbox(feat: str, func) -> int:
+    """Create a selectbox to select the day to display
+
+    Args:
+        feat (str): Feature of the selectbox, key for the params
+        func: Function to update the selectbox value and pass to map
+    Returns:
+        (int): Day selected as an int
+    """
+    list_days = [
+        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+    ]
+    str_day = st.selectbox(label="select_the_day", options=list_days, key=feat, on_change=func)
+    if str_day == "Monday":
+        return 0
+    elif str_day == "Tuesday":
+        return 1
+    elif str_day == "Wednesay":
+        return 2
+    elif str_day == "Thursday":
+        return 3
+    elif str_day == "Friday":
+        return 4
+    elif str_day == "Saturday":
+        return 5
+    else:
+        return 6
+
 
 @st.cache_resource
 def load_data(path_file: str) -> pd.DataFrame:
@@ -174,9 +202,7 @@ def mpoint(lat: np.array, lon: np.array) -> tuple:
 def create_body(path_data_by_day: str):
     """
     """
-    day_selected = select_slider(
-        feat='pickup_day', min_slider=0, max_slider=6, title_slider='Select the day of the week', func=update_query_params_day
-    )
+    day_selected = select_selectbox(feat='pickup_day', func=update_query_params_day)
     hour_selected = select_slider(
         feat='pickup_hour', min_slider=0, max_slider=23, title_slider='Select the hour of the day', func=update_query_params_hour
     )
