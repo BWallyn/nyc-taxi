@@ -54,7 +54,7 @@ def update_query_params_day() -> None:
 
 
 def update_query_params_hour() -> None:
-    """Update the query parameters for the hour selected
+    """Update the query parameters for the datetime selected
     """
     hour_selected = st.session_state["pickup_hour"]
     st.query_params["pickup_hour"] = hour_selected
@@ -83,26 +83,13 @@ def select_selectbox(feat: str, func) -> int:
         feat (str): Feature of the selectbox, key for the params
         func: Function to update the selectbox value and pass to map
     Returns:
-        (int): Day selected as an int
+        (str): Day of week selected
     """
-    list_days = [
-        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-    ]
-    str_day = st.selectbox(label="select_the_day", options=list_days, key=feat, on_change=func)
-    if str_day == "Monday":
-        return 0
-    elif str_day == "Tuesday":
-        return 1
-    elif str_day == "Wednesay":
-        return 2
-    elif str_day == "Thursday":
-        return 3
-    elif str_day == "Friday":
-        return 4
-    elif str_day == "Saturday":
-        return 5
-    else:
-        return 6
+    return st.selectbox(
+        label="select_the_datetime",
+        options=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        key=feat, on_change=func
+    )
 
 
 @st.cache_resource
@@ -117,17 +104,25 @@ def load_data(path_file: str) -> pd.DataFrame:
     return gpd.read_file(path_file)
 
 
-def select_day_hour(df: pd.DataFrame, day_sel: int, hour_sel: int) -> pd.DataFrame:
+def select_datetime(df: pd.DataFrame, day_sel: str, hour_sel: int) -> pd.DataFrame:
     """Filter the dataframe on the day and hour selected
 
     Args:
         df (pd.DataFrame): Input dataframe
-        day_sel (int): Number of the day of the week selected
-        hour_sel (int): Hour of the day selected
+        day_sel (str): Day of week selected
+        hour_sel (int): Hour selected
     Returns:
         (pd.DataFrame): Filtered dataframe
     """
-    return df.loc[(df['date_dayofweek'] == day_sel) & (df['date_hour'] == hour_sel)]
+    return df.loc[(df['pickup_dayofweek'] == day_sel) & (df['pickup_hour'] == hour_sel)]
+
+
+def get_list_datetime_available(df: pd.DataFrame) -> list[str]:
+    """
+    """
+    list_datetime_available = list(set(df['pickup_datetime'].values))
+    list_datetime_available.sort()
+    return list_datetime_available
 
 
 def map(data: pd.DataFrame, lat, lon, zoom) -> None:
@@ -202,17 +197,21 @@ def mpoint(lat: np.array, lon: np.array) -> tuple:
 def create_body(path_data_by_day: str):
     """
     """
-    day_selected = select_selectbox(feat='pickup_day', func=update_query_params_day)
+    # Select day of week and hour to display
+    dayofweek_selected = select_selectbox(
+        feat='pickup_day', func=update_query_params_day
+    )
     hour_selected = select_slider(
-        feat='pickup_hour', min_slider=0, max_slider=23, title_slider='Select the hour of the day', func=update_query_params_hour
+        feat='pickup_hour', min_slider=0, max_slider=23,
+        title_slider='Select the hour', func=update_query_params_hour
     )
     # Load data
     df = load_data(path_file=path_data_by_day)
-    df_sel = select_day_hour(df=df, day_sel=day_selected, hour_sel=hour_selected)
+    df_sel = select_datetime(df=df, day_sel=dayofweek_selected, hour_sel=hour_selected)
     # Plot maps of the number of trips per hour
     cols_for_map = ['n_trips', 'Lon', 'Lat', 'zone']
     # Plot
-    st.write(f"**Number of rides on the specific day {day_selected} and hour {hour_selected} chosen:**")
+    st.write(f"**Number of rides on {dayofweek_selected} {hour_selected}:**")
     map(df_sel[cols_for_map], MANHATTAN[0], MANHATTAN[1], ZOOM_LEVEL)
 
 
@@ -222,7 +221,7 @@ def main():
     """
     set_parameters()
     create_heading()
-    create_body(path_data_by_day='data/08_reporting/df_training_group_dayofweek_hour_w_geo.geojson')
+    create_body(path_data_by_day='data/08_reporting/gdf_training_group_location_datetime_w_geo.geojson')
 
 
 # =============
