@@ -69,14 +69,10 @@ pred_test:
   type: pandas.CSVDataset
   filepath: data/07_model_output/pred_test.csv
 
-prepare_data_for_dashboard.df_training_group_dayofweek_hour:
-  type: pickle.PickleDataset
-  filepath: data/08_reporting/df_training_group_dayofweek_hour.pkl
-
-prepare_data_for_dashboard.gdf_training_with_geo_info:
-  type: kedro_datasets.geopandas.GeoJSONDataset
-  filepath: data/08_reporting/df_training_group_dayofweek_hour_w_geo.geojson
-
-prepare_data_for_dashboard.df_training_location_date_w_zone:
+df_training_location_date_w_zone:
   type: pickle.PickleDataset
   filepath: data/08_reporting/df_training_group_location_datetime.pkl
+
+gdf_training_location_date_w_geo:
+  type: kedro_datasets.geopandas.GeoJSONDataset
+  filepath: data/08_reporting/gdf_training_group_location_datetime_w_geo.geojson
