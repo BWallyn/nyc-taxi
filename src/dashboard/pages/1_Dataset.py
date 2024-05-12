@@ -60,7 +60,7 @@ def aggregate_all_locations(df: pd.DataFrame) -> pd.DataFrame:
     return df_group
 
 
-def create_selectbox(tuple_locations: tuple[str]) -> str:
+def create_selectbox(tuple_locations: tuple[str], key_name: str) -> str:
     """Create a selectbox for the locations to display
 
     Args:
@@ -70,7 +70,8 @@ def create_selectbox(tuple_locations: tuple[str]) -> str:
     """
     return st.selectbox(
         "Select location:",
-        tuple_locations
+        tuple_locations,
+        key=key_name
     )
 
 
@@ -128,15 +129,22 @@ def create_body(path_data: str, path_target: str, path_data_by_location_datetime
     # Diplay the number of rides for specific place
     st.write("**Display the number of rides for a specific place:**")
     tuple_locations = tuple(set(df['zone'].values))
-    location_sel = create_selectbox(tuple_locations=tuple_locations)
+    location_sel = create_selectbox(tuple_locations=tuple_locations, key_name='n_trip')
     df_sel = select_location(df, location_ex=location_sel)
     fig = plot_by_datetime(df_sel, feat='n_trips', title=f'Number of rides per hour for {location_sel}')
     st.plotly_chart(fig, theme="streamlit", use_container_width=True, width=1000)
 
     # ---- Display the time of the rides ----
     st.write("**Display the average duration of the rides by datetime:**")
-    fig = plot_by_datetime(df_all, feat='duration', title='Average duration of rides')
-    st.plotly_chart(fig, theme="streamlit", use_container_width=True, width=1000)
+    fig_duration = plot_by_datetime(df_all, feat='duration', title='Average duration of rides')
+    st.plotly_chart(fig_duration, theme="streamlit", use_container_width=True, width=1000)
+
+    # Display the average duration of rides per location
+    st.write("**Display the average duration of rides for a specific place:**")
+    location_sel_duration = create_selectbox(tuple_locations=tuple_locations, key_name='duration')
+    df_sel_duration = select_location(df, location_ex=location_sel_duration)
+    fig_sel_duration = plot_by_datetime(df_sel_duration, feat='duration', title=f'Average duration of rides for {location_sel_duration}')
+    st.plotly_chart(fig_sel_duration, theme="streamlit", use_container_width=True, width=1000)
 
 
 def main():
