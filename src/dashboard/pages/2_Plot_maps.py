@@ -149,7 +149,9 @@ def map(data: pd.DataFrame, lat, lon, zoom) -> None:
     
     # Prepare options plot
     max_rides, min_rides = data['n_trips'].max(), data['n_trips'].min()
-    data['fill_color'] = data['n_trips'].apply(lambda x: pseudocolor(x, min_rides, max_rides, WHITE, ORANGE))
+    data = data.assign(
+        fill_color = data['n_trips'].apply(lambda x: pseudocolor(x, min_rides, max_rides, WHITE, ORANGE))
+    )
     # Plot
     initial_view_state = {
         "latitude": lat,
