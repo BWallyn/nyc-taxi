@@ -18,7 +18,7 @@ import streamlit as st
 # ===================
 
 def set_parameters():
-    """
+    """Set the parameters of the page
     """
     st.set_page_config(
         layout='wide',
@@ -36,10 +36,14 @@ def create_heading() -> None:
 
 @st.cache_resource
 def load_data(path_file: str) -> pd.DataFrame:
+    """Load dataframe saved as pickle file
+
+    Args:
+        path_file (str): Path to the dataframe
+    Returns:
+        (pd.DataFrame): Loaded dataframe
     """
-    """
-    df = pd.read_pickle(path_file)
-    return df
+    return pd.read_pickle(path_file)
 
 
 @st.cache_data
@@ -60,7 +64,7 @@ def aggregate_all_locations(df: pd.DataFrame) -> pd.DataFrame:
     return df_group
 
 
-def create_selectbox(tuple_locations: tuple[str]) -> str:
+def create_selectbox(tuple_locations: tuple[str], key_name: str) -> str:
     """Create a selectbox for the locations to display
 
     Args:
@@ -70,7 +74,8 @@ def create_selectbox(tuple_locations: tuple[str]) -> str:
     """
     return st.selectbox(
         "Select location:",
-        tuple_locations
+        tuple_locations,
+        key=key_name
     )
 
 
@@ -111,13 +116,16 @@ def plot_by_datetime(
     return fig
 
 
-def create_body(path_data: str, path_target: str, path_data_by_location_datetime: str) -> None:
+def create_body(path_data: str) -> None:
     """Create the body of the app
+
+    Args:
+        path_data (str): Path to the input dataframe
     """
     st.header("The dataset")
 
     # ---- Display the number of rides ----
-    df = load_data(path_file=path_data_by_location_datetime)
+    df = load_data(path_file=path_data)
 
     # Display the number of rides for all places
     df_all = aggregate_all_locations(df)
@@ -128,15 +136,22 @@ def create_body(path_data: str, path_target: str, path_data_by_location_datetime
     # Diplay the number of rides for specific place
     st.write("**Display the number of rides for a specific place:**")
     tuple_locations = tuple(set(df['zone'].values))
-    location_sel = create_selectbox(tuple_locations=tuple_locations)
+    location_sel = create_selectbox(tuple_locations=tuple_locations, key_name='n_trip')
     df_sel = select_location(df, location_ex=location_sel)
     fig = plot_by_datetime(df_sel, feat='n_trips', title=f'Number of rides per hour for {location_sel}')
     st.plotly_chart(fig, theme="streamlit", use_container_width=True, width=1000)
 
     # ---- Display the time of the rides ----
     st.write("**Display the average duration of the rides by datetime:**")
-    fig = plot_by_datetime(df_all, feat='duration', title='Average duration of rides')
-    st.plotly_chart(fig, theme="streamlit", use_container_width=True, width=1000)
+    fig_duration = plot_by_datetime(df_all, feat='duration', title='Average duration of rides')
+    st.plotly_chart(fig_duration, theme="streamlit", use_container_width=True, width=1000)
+
+    # Display the average duration of rides per location
+    st.write("**Display the average duration of rides for a specific place:**")
+    location_sel_duration = create_selectbox(tuple_locations=tuple_locations, key_name='duration')
+    df_sel_duration = select_location(df, location_ex=location_sel_duration)
+    fig_sel_duration = plot_by_datetime(df_sel_duration, feat='duration', title=f'Average duration of rides for {location_sel_duration}')
+    st.plotly_chart(fig_sel_duration, theme="streamlit", use_container_width=True, width=1000)
 
 
 def main():
@@ -145,8 +160,7 @@ def main():
     set_parameters()
     create_heading()
     create_body(
-        path_data='data/05_model_input/df_training.pkl', path_target='data/05_model_input/y_training.csv',
-        path_data_by_location_datetime='data/08_reporting/df_training_group_location_datetime.pkl'
+        path_data='data/08_reporting/df_training_group_location_datetime.pkl'
     )
 
 
