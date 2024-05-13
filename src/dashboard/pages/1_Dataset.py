@@ -18,7 +18,7 @@ import streamlit as st
 # ===================
 
 def set_parameters():
-    """
+    """Set the parameters of the page
     """
     st.set_page_config(
         layout='wide',
@@ -36,10 +36,14 @@ def create_heading() -> None:
 
 @st.cache_resource
 def load_data(path_file: str) -> pd.DataFrame:
+    """Load dataframe saved as pickle file
+
+    Args:
+        path_file (str): Path to the dataframe
+    Returns:
+        (pd.DataFrame): Loaded dataframe
     """
-    """
-    df = pd.read_pickle(path_file)
-    return df
+    return pd.read_pickle(path_file)
 
 
 @st.cache_data
@@ -112,13 +116,16 @@ def plot_by_datetime(
     return fig
 
 
-def create_body(path_data: str, path_target: str, path_data_by_location_datetime: str) -> None:
+def create_body(path_data: str) -> None:
     """Create the body of the app
+
+    Args:
+        path_data (str): Path to the input dataframe
     """
     st.header("The dataset")
 
     # ---- Display the number of rides ----
-    df = load_data(path_file=path_data_by_location_datetime)
+    df = load_data(path_file=path_data)
 
     # Display the number of rides for all places
     df_all = aggregate_all_locations(df)
@@ -153,8 +160,7 @@ def main():
     set_parameters()
     create_heading()
     create_body(
-        path_data='data/05_model_input/df_training.pkl', path_target='data/05_model_input/y_training.csv',
-        path_data_by_location_datetime='data/08_reporting/df_training_group_location_datetime.pkl'
+        path_data='data/08_reporting/df_training_group_location_datetime.pkl'
     )
 
 
