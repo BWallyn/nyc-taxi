@@ -3,14 +3,11 @@
 # =================
 
 # Data science
-import numpy as np
 import pandas as pd
 
 # Plots
-import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
-import altair as alt
 
 # App
 import streamlit as st
@@ -21,7 +18,7 @@ import streamlit as st
 # ===================
 
 def set_parameters():
-    """
+    """Set the parameters of the page
     """
     st.set_page_config(
         layout='wide',
@@ -39,21 +36,35 @@ def create_heading() -> None:
 
 @st.cache_resource
 def load_data(path_file: str) -> pd.DataFrame:
+    """Load dataframe saved as pickle file
+
+    Args:
+        path_file (str): Path to the dataframe
+    Returns:
+        (pd.DataFrame): Loaded dataframe
     """
-    """
-    df = pd.read_pickle(path_file)
-    return df
+    return pd.read_pickle(path_file)
 
 
 @st.cache_data
-def load_target(path_file: str) -> pd.Series:
+def aggregate_all_locations(df: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate values of all locations.
+    All rows are grouped by the datetime hour and sum the number of trips
+
+    Args:
+        df (pd.DataFrame): Input dataFrame
+    Returns:
+        df_group (pd.DataFrame): Output dataframe
     """
-    """
-    y_target = pd.read_csv(path_file)
-    return y_target
+    df_group = df.groupby(by=["pickup_datetime"]).agg({
+        'n_trips': 'sum',
+        'duration': 'mean'
+    })
+    df_group = df_group.reset_index(drop=False)
+    return df_group
 
 
-def create_selectbox(tuple_locations: tuple[str]) -> str:
+def create_selectbox(tuple_locations: tuple[str], key_name: str) -> str:
     """Create a selectbox for the locations to display
 
     Args:
@@ -63,7 +74,8 @@ def create_selectbox(tuple_locations: tuple[str]) -> str:
     """
     return st.selectbox(
         "Select location:",
-        tuple_locations
+        tuple_locations,
+        key=key_name
     )
 
 
@@ -80,23 +92,23 @@ def select_location(df: pd.DataFrame, location_ex: str) -> pd.DataFrame:
     return df.loc[df["zone"] == location_ex]
 
 
-def plot_one_sample(
-    df: pd.DataFrame, location_ex: str,
+def plot_by_datetime(
+    df: pd.DataFrame, feat: str, title: str,
 ) -> go.Figure:
-    """Plot the number of trips in the time on a specific location
+    """Plot a line representing the feature 'feat' by datetime.
 
     Args:
         df (pd.DataFrame): Input dataframe
-        location_ex (str): Location displayed
+        feat (str): Feature to display on the plot
+        location_ex (str): Title of the plot
     Returns:
-        fig (go.Figure): Figure of the number of trips
+        fig (go.Figure): Figure as a lineplot
     """
     # Define figure
     fig = go.Figure()
-    title = f'Number of trip per hour for {location_ex}'
     fig = px.line(
         x=df['pickup_datetime'],
-        y=df['n_trips'],
+        y=df[feat],
         template='plotly_dark',
         markers=True,
         title=title
@@ -104,20 +116,42 @@ def plot_one_sample(
     return fig
 
 
-def create_body(path_data: str, path_target: str, path_data_by_day: str) -> None:
+def create_body(path_data: str) -> None:
     """Create the body of the app
+
+    Args:
+        path_data (str): Path to the input dataframe
     """
     st.header("The dataset")
 
     # ---- Display the number of rides ----
+    df = load_data(path_file=path_data)
+
+    # Display the number of rides for all places
+    df_all = aggregate_all_locations(df)
+    st.write("**Display the number of rides for NYC:**")
+    fig = plot_by_datetime(df_all, feat='n_trips', title='Number of rides per hour for NYC')
+    st.plotly_chart(fig, theme="streamlit", use_container_width=True, width=1000)
+
     # Diplay the number of rides for specific place
     st.write("**Display the number of rides for a specific place:**")
-    df = load_data(path_file='data/08_reporting/df_training_group_location_datetime.pkl')
     tuple_locations = tuple(set(df['zone'].values))
-    location_sel = create_selectbox(tuple_locations=tuple_locations)
+    location_sel = create_selectbox(tuple_locations=tuple_locations, key_name='n_trip')
     df_sel = select_location(df, location_ex=location_sel)
-    fig = plot_one_sample(df_sel, location_ex=location_sel)
+    fig = plot_by_datetime(df_sel, feat='n_trips', title=f'Number of rides per hour for {location_sel}')
     st.plotly_chart(fig, theme="streamlit", use_container_width=True, width=1000)
+
+    # ---- Display the time of the rides ----
+    st.write("**Display the average duration of the rides by datetime:**")
+    fig_duration = plot_by_datetime(df_all, feat='duration', title='Average duration of rides')
+    st.plotly_chart(fig_duration, theme="streamlit", use_container_width=True, width=1000)
+
+    # Display the average duration of rides per location
+    st.write("**Display the average duration of rides for a specific place:**")
+    location_sel_duration = create_selectbox(tuple_locations=tuple_locations, key_name='duration')
+    df_sel_duration = select_location(df, location_ex=location_sel_duration)
+    fig_sel_duration = plot_by_datetime(df_sel_duration, feat='duration', title=f'Average duration of rides for {location_sel_duration}')
+    st.plotly_chart(fig_sel_duration, theme="streamlit", use_container_width=True, width=1000)
 
 
 def main():
@@ -126,8 +160,7 @@ def main():
     set_parameters()
     create_heading()
     create_body(
-        path_data='data/05_model_input/df_training.pkl', path_target='data/05_model_input/y_training.csv',
-        path_data_by_day='data/08_reporting/df_training_group_dayofweek_hour.pkl'
+        path_data='data/08_reporting/df_training_group_location_datetime.pkl'
     )
 
 

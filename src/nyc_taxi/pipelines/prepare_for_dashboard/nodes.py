@@ -137,21 +137,39 @@ def get_lon_lat(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     return gdf
 
 
-def add_geographical_info_pickup(df: pd.DataFrame, gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
-    """Add geographical info from geopandas dataframe
+def add_target_col(df: pd.DataFrame, y_target: pd.DataFrame) -> pd.DataFrame:
+    """Add target to the dataframe
 
     Args:
-        df: Input dataframe
-        gdf: Geopandas dataframe with shapes of the location ID
+        df (pd.DataFrame): Input dataframe
+        y_target (pd.Series): Target
     Returns:
-        gdf: Output dataframe with the geographical info
+        df (pd.DataFrame): Output dataframe with target
     """
-    df.reset_index(drop=False, inplace=True)
-    cols = df.columns.tolist() + gdf.columns.tolist()
-    # Merge geographical info
-    gdf = gdf.merge(df, left_on='LocationID', right_on='PULocationID', how='inner')
-    return gdf[cols]
+    df['duration'] = y_target['duration'].values
+    return df
 
+
+def dict_aggregate() -> dict:
+    """
+    """
+    return {
+        'VendorID': 'count',
+        'DOLocationID': lambda x: x.value_counts().index[0],
+        'passenger_count': 'median',
+        'trip_distance': 'mean',
+        'payment_type': lambda x: x.value_counts().index[0],
+        'fare_amount': 'mean',
+        'extra': 'mean',
+        'mta_tax': 'median',
+        'tip_amount': 'mean',
+        'tolls_amount': 'mean',
+        'improvement_surcharge': 'median',
+        'total_amount': 'mean',
+        'congestion_surcharge': 'mean',
+        'airport_fee': 'mean',
+        'duration': 'mean',
+    }
 
 def aggregate_by_location_hour(df: pd.DataFrame) -> pd.DataFrame:
     """Aggregate the dataframe by location and hour
@@ -169,23 +187,7 @@ def aggregate_by_location_hour(df: pd.DataFrame) -> pd.DataFrame:
     df.drop(columns=['tpep_pickup_datetime'], inplace=True)
     df_group = df.groupby(by=[
         'PULocationID', 'pickup_day', 'pickup_hour'
-    ])\
-        .agg({
-            'VendorID': 'count',
-            'DOLocationID': lambda x: x.value_counts().index[0],
-            'passenger_count': 'median',
-            'trip_distance': 'mean',
-            'payment_type': lambda x: x.value_counts().index[0],
-            'fare_amount': 'mean',
-            'extra': 'mean',
-            'mta_tax': 'median',
-            'tip_amount': 'mean',
-            'tolls_amount': 'mean',
-            'improvement_surcharge': 'median',
-            'total_amount': 'mean',
-            'congestion_surcharge': 'mean',
-            'airport_fee': 'mean',
-        })
+    ]).agg(dict_aggregate())
     df_group = df_group.rename(columns={'VendorID': 'n_trips'})
     df_group = df_group.reset_index(drop=False)
     df_group['pickup_day'] = pd.to_datetime(df_group['pickup_day'])
@@ -211,3 +213,45 @@ def add_location_name(df: pd.DataFrame, gdf: gpd.GeoDataFrame) -> pd.DataFrame:
         right_on='LocationID',
         how='inner'
     )
+
+
+def aggregate_by_location_dayofweek_hour(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    """
+    # Select only recent years
+    df = df.loc[df['tpep_pickup_datetime'] > pd.to_datetime('2023-01-01')]
+    # Create features about the date and hour
+    df = df.assign(
+        pickup_dayofweek = df['tpep_pickup_datetime'].dt.dayofweek,
+        pickup_hour = df['tpep_pickup_datetime'].dt.hour
+    )
+    df.drop(columns=['tpep_pickup_datetime'], inplace=True)
+    # Group by pickup location, dayofweek and hour
+    df_group = df.groupby(by=[
+        'PULocationID', 'pickup_dayofweek', 'pickup_hour'
+    ]).agg(dict_aggregate())
+    df_group = df_group.rename(columns={'VendorID': 'n_trips'})
+    df_group = df_group.reset_index(drop=False)
+    # Replace values dayofweek as str
+    dict_dayofweek_int_to_str = {
+        0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday',
+        4: 'Friday', 5: 'Saturday', 6: 'Sunday'
+    }
+    df_group = df_group.replace({'pickup_dayofweek': dict_dayofweek_int_to_str})
+    return df_group
+
+
+def add_geographical_info_pickup(df: pd.DataFrame, gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """Add geographical info from geopandas dataframe
+
+    Args:
+        df: Input dataframe
+        gdf: Geopandas dataframe with shapes of the location ID
+    Returns:
+        gdf: Output dataframe with the geographical info
+    """
+    df.reset_index(drop=False, inplace=True)
+    cols = df.columns.tolist() + gdf.columns.tolist()
+    # Merge geographical info
+    gdf = gdf.merge(df, left_on='LocationID', right_on='PULocationID', how='inner')
+    return gdf[cols]
