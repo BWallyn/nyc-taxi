@@ -1,5 +1,6 @@
 # Pin problematic traitlets release -  https://github.com/jupyter/notebook/issues/7048
-ipython~=8.10; python_version >= '3.8'
+ipython~=8.10; python_version >= '3.11'
+geopandas==0.14.3
 jupyterlab_server>=2.11.1, <2.16.0
 jupyterlab~=3.0, <3.6.0
 jupyter~=1.0
