@@ -38,6 +38,7 @@ def create_sidebar() -> None:
 def create_body() -> None:
     """
     """
+    st.image("https://www.nyc.gov/assets/tlc/images/content/pages/businesses/yellow-cab.png")
     st.markdown(
         """
             The goal of this project is to analyze the data from TLC about NYC yellow taxis.
