@@ -1,0 +1,12 @@
+{
+  "type": "pandas.csv_dataset.CSVDataset",
+  "filepath": "/home/runner/work/nyc-taxi/nyc-taxi/data/05_model_input/y_training.csv",
+  "run_command": null,
+  "preview": null,
+  "preview_type": "TablePreview",
+  "stats": {
+    "rows": 9384451,
+    "columns": 1,
+    "file_size": 59056926
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "pickle.pickle_dataset.PickleDataset",
+  "filepath": "/home/runner/work/nyc-taxi/nyc-taxi/data/05_model_input/df_training.pkl",
+  "run_command": null,
+  "preview": null,
+  "preview_type": null,
+  "stats": {
+    "rows": 9384451,
+    "columns": 19,
+    "file_size": 1407454397
+  }
+}
