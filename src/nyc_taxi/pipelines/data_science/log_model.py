@@ -3,8 +3,6 @@
 # ==== IMPORTS ====
 # =================
 
-import numpy as np
-import pandas as pd
 
 from comet_ml import Experiment
 from comet_ml.integration.sklearn import log_model
