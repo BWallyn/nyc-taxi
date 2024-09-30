@@ -7,7 +7,6 @@ generated using Kedro 0.19.1
 # =================
 
 import numpy as np
-import pandas as pd
 
 from sklearn.metrics import mean_squared_error
 
