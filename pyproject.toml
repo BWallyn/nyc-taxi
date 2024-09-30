@@ -27,3 +27,6 @@ attr = "nyc_taxi.__version__"
 [tool.setuptools.packages.find]
 where = [ "src",]
 namespaces = false
+
+[tool.kedro_telemetry]
+project_id = "dc5455a4ab124d2b9a7107c7df9015a7"
