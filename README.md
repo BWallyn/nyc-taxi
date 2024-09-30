@@ -1,20 +1,21 @@
-# New York City TCL trips
+# 🚕 New York City TCL trips
 
-## Introduction
+
+## 📖 Introduction
 
 The goal of this project is to predict the time of a NYC taxi trip. The data is provided by the [NYC Taxi and Limousine Commission](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page).
 
-## Pipelines
+## 🚀 Pipelines
 
 The pipeline of the entire process is:
 ![Process](./reports/kedro-pipeline.png)
 
-### Data engineering
+### 📡 Data engineering
 
 The data engineering pipeline is designed to download the data from the NYC Taxi and Limousine Commission, split into train, validation and test sets and create the target.
 
 
-### Data science
+### ⚛️ Data science
 
 The data science pipeline is designed to train the model. The model is a scikit-learn pipeline with a Gradient Boosting model. The process is:
 * Merge both airport variables
@@ -23,30 +24,32 @@ The data science pipeline is designed to train the model. The model is a scikit-
 * Train the model
 
 
-### Model inference
+### 🛸 Model inference
 
 Predict the trip duration using the scikit-learn pipeline.
 
 
-### Model evaluation
+### 🧪 Model evaluation
 
 Evaluate the performance model. To do so:
 * Compute metrics
 * Plot the histograms of the predictions
 
 
-### Prepare for dashboard
+### 📊 Prepare for dashboard
 
 Prepare data for the dashboard.
 
 
-## Overview
+## 🖥️ Kedro
+
+### Overview
 
 This is your new Kedro project, which was generated using `kedro 0.19.1`.
 
 Take a look at the [Kedro documentation](https://docs.kedro.org) to get started.
 
-## Rules and guidelines
+### Rules and guidelines
 
 In order to get the best out of the template:
 
@@ -55,7 +58,7 @@ In order to get the best out of the template:
 * Don't commit data to your repository
 * Don't commit any credentials or your local configuration to your repository. Keep all your credentials and local configuration in `conf/local/`
 
-## How to install dependencies
+### How to install dependencies
 
 Declare any dependencies in `requirements.txt` for `pip` installation.
 
@@ -65,7 +68,7 @@ To install them, run:
 pip install -r requirements.txt
 ```
 
-## How to run your Kedro pipeline
+### How to run your Kedro pipeline
 
 You can run your Kedro project with:
 
@@ -73,7 +76,7 @@ You can run your Kedro project with:
 kedro run
 ```
 
-## How to test your Kedro project
+### How to test your Kedro project
 
 Have a look at the file `src/tests/test_run.py` for instructions on how to write your tests. You can run your tests as follows:
 
@@ -84,19 +87,19 @@ pytest
 You can configure the coverage threshold in your project's `pyproject.toml` file under the `[tool.coverage.report]` section.
 
 
-## Project dependencies
+### Project dependencies
 
 To see and update the dependency requirements for your project use `requirements.txt`. You can install the project requirements with `pip install -r requirements.txt`.
 
 [Further information about project dependencies](https://docs.kedro.org/en/stable/kedro_project_setup/dependencies.html#project-specific-dependencies)
 
-## How to work with Kedro and notebooks
+### How to work with Kedro and notebooks
 
 > Note: Using `kedro jupyter` or `kedro ipython` to run your notebook provides these variables in scope: `context`, 'session', `catalog`, and `pipelines`.
 >
 > Jupyter, JupyterLab, and IPython are already included in the project requirements by default, so once you have run `pip install -r requirements.txt` you will not need to take any extra steps before you use them.
 
-### Jupyter
+#### Jupyter
 To use Jupyter notebooks in your Kedro project, you need to install Jupyter:
 
 ```
@@ -109,7 +112,7 @@ After installing Jupyter, you can start a local notebook server:
 kedro jupyter notebook
 ```
 
-### JupyterLab
+#### JupyterLab
 To use JupyterLab, you need to install it:
 
 ```
@@ -122,18 +125,18 @@ You can also start JupyterLab:
 kedro jupyter lab
 ```
 
-### IPython
+#### IPython
 And if you want to run an IPython session:
 
 ```
 kedro ipython
 ```
 
-### How to ignore notebook output cells in `git`
+#### How to ignore notebook output cells in `git`
 To automatically strip out all output cell contents before committing to `git`, you can use tools like [`nbstripout`](https://github.com/kynan/nbstripout). For example, you can add a hook in `.git/config` with `nbstripout --install`. This will run `nbstripout` before anything is committed to `git`.
 
 > *Note:* Your output cells will be retained locally.
 
-## Package your Kedro project
+### Package your Kedro project
 
 [Further information about building project documentation and packaging your project](https://docs.kedro.org/en/stable/tutorial/package_a_project.html)
