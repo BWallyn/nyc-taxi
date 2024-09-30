@@ -18,7 +18,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OrdinalEncoder
 
-from .feature_engineering import cos_transformer, sin_transformer, periodic_spline_transformer
+from .feature_engineering import periodic_spline_transformer
 from .log_model import log_hgbr_model
 
 

@@ -22,16 +22,19 @@ df_train:
   # type: pandas.ParquetDataset
   type: pickle.PickleDataset
   filepath: data/03_primary/df_train.pkl
+  backend: pickle
 
 df_valid:
   # type: pandas.ParquetDataset
   type: pickle.PickleDataset
   filepath: data/03_primary/df_valid.pkl
+  backend: pickle
 
 df_test:
   # type: pandas.ParquetDataset
   type: pickle.PickleDataset
   filepath: data/03_primary/df_test.pkl
+  backend: pickle
 
 y_train:
   type: pandas.CSVDataset
@@ -48,10 +51,12 @@ y_test:
 df_training:
   type: pickle.PickleDataset
   filepath: data/05_model_input/df_training.pkl
+  backend: pickle
 
 df_test_hour:
   type: pickle.PickleDataset
   filepath: data/05_model_input/df_test.pkl
+  backend: pickle
 
 y_training:
   type: pandas.CSVDataset
@@ -60,6 +65,7 @@ y_training:
 model_trained:
   type: pickle.PickleDataset
   filepath: data/06_models/model.pkl
+  backend: pickle
 
 pred_training:
   type: pandas.CSVDataset
@@ -72,7 +78,8 @@ pred_test:
 df_training_location_date_w_zone:
   type: pickle.PickleDataset
   filepath: data/08_reporting/df_training_group_location_datetime.pkl
+  backend: pickle
 
 gdf_training_location_date_w_geo:
-  type: kedro_datasets.geopandas.GeoJSONDataset
+  type: geopandas.GeoJSONDataset
   filepath: data/08_reporting/gdf_training_group_location_datetime_w_geo.geojson
