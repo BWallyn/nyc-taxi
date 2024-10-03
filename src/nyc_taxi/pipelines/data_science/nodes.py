@@ -20,7 +20,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OrdinalEncoder
 
 from nyc_taxi.pipelines.data_science.feature_engineering import periodic_spline_transformer
-from nyc_taxi.pipelines.data_science.log_mlflow import create_mlflow_experiment, _log_model_mlflow, _log_mlflow_metric, _log_mlflow_parameters
+from nyc_taxi.pipelines.data_science.log_mlflow import _log_model_mlflow, _log_mlflow_metric, _log_mlflow_parameters
 from nyc_taxi.pipelines.data_science.log_model import log_hgbr_model
 
 
@@ -145,7 +145,7 @@ def train_model_mlflow(
 ) -> Pipeline:
     """Train a model and log to MLflow
     """
-    with mlflow.start_run(experiment_id=experiment_id) as run:
+    with mlflow.start_run(experiment_id=experiment_id):
         # Train the model
         estimator.fit(df_train, y_train)
         # Predict
