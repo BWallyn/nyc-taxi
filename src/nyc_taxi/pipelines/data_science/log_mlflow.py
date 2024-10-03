@@ -47,3 +47,12 @@ def _log_mlflow_metric(dict_metrics: dict[str, float]):
         dict_metrics (dict[str, float]): Dict of metrics to log to MLflow
     """
     mlflow.log_metrics(dict_metrics)
+
+
+def _log_mlflow_parameters(dict_params: dict[str, float]):
+    """Log parameters to MLflow
+
+    Args:
+        dict_params (dict[str, float]): Dict of parameters to log to MLflow
+    """
+    mlflow.log_parameters(dict_params)
