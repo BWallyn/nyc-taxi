@@ -18,8 +18,9 @@ from sklearn.metrics import mean_squared_error
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OrdinalEncoder
 
-from .feature_engineering import periodic_spline_transformer
-from .log_model import log_hgbr_model
+from nyc_taxi.pipelines.data_science.feature_engineering import periodic_spline_transformer
+from nyc_taxi.pipelines.data_science.log_mlflow import create_mlflow_experiment, _log_model_mlflow, _log_mlflow_metric
+from nyc_taxi.pipelines.data_science.log_model import log_hgbr_model
 
 
 # ===================
@@ -133,3 +134,25 @@ def train_model(
     # Log to Comet
     log_hgbr_model(api_key=api_key, params=params_hgbr, metrics=metrics, model=estimator, model_name="HistGradientBoostingRegressor_model")
     return estimator
+
+
+def train_model_mlflow(
+    experiment_id: str,
+    estimator: Pipeline, df_train: pd.DataFrame, df_valid: pd.DataFrame,
+    y_train: pd.DataFrame, y_valid: pd.DataFrame,
+    params_hgbr: dict,
+) -> Pipeline:
+    """Train a model and log to MLflow
+    """
+    # Train the model
+    estimator.fit(df_train, y_train)
+    # Predict
+    pred_train = estimator.predict(df_train)
+    pred_valid = estimator.predict(df_valid)
+    # Compute metrics
+    metrics = {
+        "RMSE_train": mean_squared_error(y_true=y_train, y_pred=pred_train, squared=False),
+        "RMSE_valid": mean_squared_error(y_true=y_valid, y_pred=pred_valid, squared=False),
+    }
+    # Log to MLflow
+    pass
