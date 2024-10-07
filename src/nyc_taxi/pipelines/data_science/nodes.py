@@ -10,6 +10,7 @@ generated using Kedro 0.19.1
 import numpy as np
 import pandas as pd
 import mlflow
+from typing import Any
 
 # Machine learning
 from sklearn.compose import ColumnTransformer
@@ -141,9 +142,24 @@ def train_model_mlflow(
     experiment_id: str,
     estimator: Pipeline, df_train: pd.DataFrame, df_valid: pd.DataFrame,
     y_train: pd.DataFrame, y_valid: pd.DataFrame,
-    params_hgbr: dict,
+    params_hgbr: dict[str, Any],
 ) -> Pipeline:
-    """Train a model and log to MLflow
+    """Train a model and log to MLflow the info about the estimator:
+    - Train a model defined as a scikit-learn pipeline
+    - Predict on the train and validation sets
+    - Compute metrics on both datasets
+    - Log metrics, model parameters and model to MLflow
+
+    Args:
+        experiment_id (str): Id of the MLflow experiment
+        estimator (Pipeline): Scikit learn pipeline
+        df_train (pd.DataFrame): Train dataframe
+        df_valid (pd.DataFrame): Validation dataframe
+        y_train (pd.DataFrame): Target of the train dataframe
+        y_valid (pd.DataFrame): Target of the validation dataframe
+        params_hgbr (dict[str, Any]): Parameters of the HistGradientBoosting model
+    Returns:
+        estimator (Pipeline): Trained estimator
     """
     with mlflow.start_run(experiment_id=experiment_id):
         # Train the model
@@ -160,3 +176,5 @@ def train_model_mlflow(
         _log_model_mlflow(estimator, df=df_train)
         _log_mlflow_parameters(dict_params=params_hgbr)
         _log_mlflow_metric(metrics)
+    # Return model trained
+    return estimator
