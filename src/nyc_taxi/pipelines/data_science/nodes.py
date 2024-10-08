@@ -16,7 +16,7 @@ from typing import Any
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.impute import SimpleImputer
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import root_mean_squared_error
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OrdinalEncoder
 
@@ -130,8 +130,8 @@ def train_model(
     pred_valid = estimator.predict(df_valid)
     # Compute metrics
     metrics = {
-        "RMSE_train": mean_squared_error(y_true=y_train, y_pred=pred_train, squared=False),
-        "RMSE_valid": mean_squared_error(y_true=y_valid, y_pred=pred_valid, squared=False),
+        "RMSE_train": root_mean_squared_error(y_true=y_train, y_pred=pred_train),
+        "RMSE_valid": root_mean_squared_error(y_true=y_valid, y_pred=pred_valid),
     }
     # Log to Comet
     log_hgbr_model(api_key=api_key, params=params_hgbr, metrics=metrics, model=estimator, model_name="HistGradientBoostingRegressor_model")
@@ -169,8 +169,8 @@ def train_model_mlflow(
         pred_valid = estimator.predict(df_valid)
         # Compute metrics
         metrics = {
-            "RMSE_train": mean_squared_error(y_true=y_train, y_pred=pred_train, squared=False),
-            "RMSE_valid": mean_squared_error(y_true=y_valid, y_pred=pred_valid, squared=False),
+            "RMSE_train": root_mean_squared_error(y_true=y_train, y_pred=pred_train),
+            "RMSE_valid": root_mean_squared_error(y_true=y_valid, y_pred=pred_valid),
         }
         # Log to MLflow
         _log_model_mlflow(estimator, df=df_train)
