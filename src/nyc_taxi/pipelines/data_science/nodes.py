@@ -10,18 +10,23 @@ generated using Kedro 0.19.1
 import numpy as np
 import pandas as pd
 import mlflow
-from typing import Any
+from typing import Any, Optional
 
 # Machine learning
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.impute import SimpleImputer
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import root_mean_squared_error
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OrdinalEncoder
 
 from nyc_taxi.pipelines.data_science.feature_engineering import periodic_spline_transformer
-from nyc_taxi.pipelines.data_science.log_mlflow import _log_model_mlflow, _log_mlflow_metric, _log_mlflow_parameters
+from nyc_taxi.pipelines.data_science.log_mlflow import (
+    create_mlflow_experiment,
+    _log_model_mlflow,
+    _log_mlflow_metric,
+    _log_mlflow_parameters
+)
 from nyc_taxi.pipelines.data_science.log_model import log_hgbr_model
 
 
@@ -130,12 +135,36 @@ def train_model(
     pred_valid = estimator.predict(df_valid)
     # Compute metrics
     metrics = {
-        "RMSE_train": mean_squared_error(y_true=y_train, y_pred=pred_train, squared=False),
-        "RMSE_valid": mean_squared_error(y_true=y_valid, y_pred=pred_valid, squared=False),
+        "RMSE_train": root_mean_squared_error(y_true=y_train, y_pred=pred_train),
+        "RMSE_valid": root_mean_squared_error(y_true=y_valid, y_pred=pred_valid),
     }
     # Log to Comet
     log_hgbr_model(api_key=api_key, params=params_hgbr, metrics=metrics, model=estimator, model_name="HistGradientBoostingRegressor_model")
     return estimator
+
+
+def create_or_get_mlflow_experiment(
+    experiment_id: Optional[str]=None,
+    experiment_folder: Optional[str]=None,
+    experiment_name: Optional[str]=None,
+) -> str:
+    """Create an MLflow experiment or use an existing one.
+    If experiment_id is not None, use the MLflow experiment of the experiment_id,
+    otherwise, create a MLflow experiment.
+
+    Args:
+        experiment_id (Optional[str]): Experiment id if exists to reuse one
+        experiment_folder (Optional[str]): Folder where to create the experiment
+        experiment_name (Optional[str]): Name of the MLflow experiment
+    Returns:
+        experiment_id (str): Id of the MLflow experiment
+    """
+    if experiment_id is not None:
+        return experiment_id,
+    else:
+        return create_mlflow_experiment(
+            experiment_folder, experiment_name
+        )
 
 
 def train_model_mlflow(
@@ -169,8 +198,8 @@ def train_model_mlflow(
         pred_valid = estimator.predict(df_valid)
         # Compute metrics
         metrics = {
-            "RMSE_train": mean_squared_error(y_true=y_train, y_pred=pred_train, squared=False),
-            "RMSE_valid": mean_squared_error(y_true=y_valid, y_pred=pred_valid, squared=False),
+            "RMSE_train": root_mean_squared_error(y_true=y_train, y_pred=pred_train),
+            "RMSE_valid": root_mean_squared_error(y_true=y_valid, y_pred=pred_valid),
         }
         # Log to MLflow
         _log_model_mlflow(estimator, df=df_train)
