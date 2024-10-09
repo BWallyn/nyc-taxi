@@ -15,4 +15,10 @@ data_science.params_hgbr: {
   "random_state": 12,
 }
 
-data_science.api_key: 
+data_science.api_key:
+
+data_science.experiment_id: None
+
+data_science.experiment_folder: "../mlflow/"
+
+data_science.experiment_name: "predict_trip"
