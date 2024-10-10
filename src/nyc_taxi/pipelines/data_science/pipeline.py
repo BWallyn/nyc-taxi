@@ -83,9 +83,9 @@ def create_pipeline(**kwargs) -> Pipeline:
             node(
                 func=create_or_get_mlflow_experiment,
                 inputs=[
-                    "params:data_science.experiment_id",
-                    "params:data_science.experiment_folder",
-                    "params:data_science.experiment_name",
+                    "params:experiment_id",
+                    "params:experiment_folder",
+                    "params:experiment_name",
                 ],
                 outputs="experiment_id",
                 name="create_or_get_MLflow_experiment"
