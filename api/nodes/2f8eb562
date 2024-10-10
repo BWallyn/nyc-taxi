@@ -1,0 +1,10 @@
+{
+  "code": "def column_transformer() -> ColumnTransformer:\n    \"\"\"Create a column transformer\n\n    Returns:\n        col_transf: Column transformer element from sklearn\n    \"\"\"\n    # Column transformer\n    col_transf = ColumnTransformer(\n        transformers=[\n            # (\"hour_sin\", sin_transformer(24), [\"tpep_pickup_datetime_hour\"]),\n            # (\"hour_cos\", cos_transformer(24), [\"tpep_pickup_datetime_hour\"]),\n            (\"hour_spline\", periodic_spline_transformer(24, n_splines=12), [\"tpep_pickup_datetime_hour\"]),\n            (\"ordinal_enc\", OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=np.nan), [\"store_and_fwd_flag\"]),\n            (\"ordinal_enc_max\", OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=np.nan, max_categories=255), [\"PULocationID\", \"DOLocationID\"]),\n        ], remainder='passthrough', verbose_feature_names_out=False,\n    )\n    return col_transf\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/data_science/nodes.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes='data_science.create_column_transformer'",
+  "inputs": [],
+  "outputs": [
+    "data_science.col_transf"
+  ]
+}

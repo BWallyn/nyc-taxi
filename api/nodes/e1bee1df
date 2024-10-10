@@ -1,0 +1,11 @@
+{
+  "code": "def plot_histograms(y_true: np.array, y_pred: np.array) -> None:\n    \"\"\"\n    \"\"\"\n    fig = go.Figure()\n    fig.add_trace(go.Histogram(x=y_true), name='target')\n    fig.add_trace(go.Histogram(x=y_pred), name='prediction')\n    # Overlay both histograms\n    fig.update_layout(barmode='overlay')\n    # Reduce opacity to see both histograms\n    fig.update_traces(opacity=0.75)\n    fig.show()\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/model_evaluation/nodes.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes='model_evaluation.node_plot_histograms_test'",
+  "inputs": [
+    "y_test",
+    "pred_test"
+  ],
+  "outputs": []
+}

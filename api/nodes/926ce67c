@@ -1,0 +1,13 @@
+{
+  "code": "def add_geographical_info_pickup(df: pd.DataFrame, gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:\n    \"\"\"Add geographical info from geopandas dataframe\n\n    Args:\n        df: Input dataframe\n        gdf: Geopandas dataframe with shapes of the location ID\n    Returns:\n        gdf: Output dataframe with the geographical info\n    \"\"\"\n    df.reset_index(drop=False, inplace=True)\n    cols = df.columns.tolist() + gdf.columns.tolist()\n    # Merge geographical info\n    gdf = gdf.merge(df, left_on='LocationID', right_on='PULocationID', how='inner')\n    return gdf[cols]\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/prepare_for_dashboard/nodes.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes='prepare_data_for_dashboard.Add_zone_name'",
+  "inputs": [
+    "prepare_data_for_dashboard.df_training_location_day_hour",
+    "prepare_data_for_dashboard.gdf_w_lon_lat"
+  ],
+  "outputs": [
+    "gdf_training_location_date_w_geo"
+  ]
+}

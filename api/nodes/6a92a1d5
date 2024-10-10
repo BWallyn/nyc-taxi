@@ -1,0 +1,13 @@
+{
+  "code": "def create_duration(df: pd.DataFrame, col_pickup_date: str=\"tpep_pickup_datetime\", col_dropoff_date: str=\"tpep_dropoff_datetime\") -> tuple[pd.DataFrame, pd.Series]:\n    \"\"\"Add duration time (in s) to the dataset using pickup and dropoff times.\n\n    Args:\n        df: DataFrame with pick-up and drop-off times\n        col_pickup_date: Name of the pickup datetime column\n        col_dropoff_date: Name of the dropoff datetime column\n    Returns:\n        df: DataFrame with the duration feature\n    \"\"\"\n    # Convert datetime\n    df[col_pickup_date] = pd.to_datetime(df[col_pickup_date], errors='coerce')\n    df[col_dropoff_date] = pd.to_datetime(df[col_dropoff_date], errors='coerce')\n    # Compute duration\n    df['duration'] = (df[col_dropoff_date] - df[col_pickup_date]).dt.total_seconds()\n    df = delete_dropoff_date(df)\n    # Extract target\n    y_target = df[\"duration\"]\n    df.drop(columns=[\"duration\"], inplace=True)\n    return df, y_target\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/data_engineering/nodes.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes='data_engineering.node_target_train'",
+  "inputs": [
+    "data_engineering.train_split"
+  ],
+  "outputs": [
+    "df_train",
+    "y_train"
+  ]
+}

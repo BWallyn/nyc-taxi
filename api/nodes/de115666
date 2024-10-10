@@ -1,0 +1,13 @@
+{
+  "code": "def add_target_col(df: pd.DataFrame, y_target: pd.DataFrame) -> pd.DataFrame:\n    \"\"\"Add target to the dataframe\n\n    Args:\n        df (pd.DataFrame): Input dataframe\n        y_target (pd.Series): Target\n    Returns:\n        df (pd.DataFrame): Output dataframe with target\n    \"\"\"\n    df['duration'] = y_target['duration'].values\n    return df\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/prepare_for_dashboard/nodes.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes='prepare_data_for_dashboard.Add_duration_to_dataset'",
+  "inputs": [
+    "df_training",
+    "y_training"
+  ],
+  "outputs": [
+    "prepare_data_for_dashboard.df_training_w_duration"
+  ]
+}

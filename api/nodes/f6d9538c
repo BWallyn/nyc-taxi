@@ -1,0 +1,8 @@
+{
+  "type": "pandas.csv_dataset.CSVDataset",
+  "filepath": "/home/runner/work/nyc-taxi/nyc-taxi/data/03_primary/y_test.csv",
+  "run_command": "kedro run --to-outputs=y_test",
+  "preview": null,
+  "preview_type": null,
+  "stats": null
+}

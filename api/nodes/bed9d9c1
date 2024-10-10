@@ -1,0 +1,8 @@
+{
+  "type": "pickle.pickle_dataset.PickleDataset",
+  "filepath": "/home/runner/work/nyc-taxi/nyc-taxi/data/08_reporting/df_training_group_location_datetime.pkl",
+  "run_command": "kedro run --to-outputs=df_training_location_date_w_zone",
+  "preview": null,
+  "preview_type": null,
+  "stats": null
+}

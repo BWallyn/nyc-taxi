@@ -1,0 +1,12 @@
+{
+  "code": "def get_lon_lat(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:\n    \"\"\"Get longitude and latitude info\n    \n    Args:\n        gdf: Input geopandas dataframe\n    Returns:\n        gdf: Output geopandas dataframe with longitude and latitude extracted\n    \"\"\"\n    gdf['Lon'] = gdf['rep_point'].x\n    gdf['Lat'] = gdf['rep_point'].y\n    gdf = gdf.drop(columns=[\"rep_point\"])\n    return gdf\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/prepare_for_dashboard/nodes.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes='prepare_data_for_dashboard.Add_longitude_and_latitude'",
+  "inputs": [
+    "prepare_data_for_dashboard.gdf_w_point"
+  ],
+  "outputs": [
+    "prepare_data_for_dashboard.gdf_w_lon_lat"
+  ]
+}

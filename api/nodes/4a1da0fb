@@ -1,0 +1,30 @@
+{
+  "code": "def pipe_estimator(feat_imp: ColumnTransformer, col_transf: ColumnTransformer, params_hgbr) -> Pipeline:\n    \"\"\"Create a regressor estimator from sklearn using a pipeline\n\n    Args:\n        feat_imp: Feature imputer element\n        col_transf: Column transformer element\n        params_hgbr: Hyperparameters for the HistGradientBoosting method\n    Returns:\n        estimator: Estimator element from sklearn\n    \"\"\"\n    estimator = Pipeline(\n        steps=[\n            ('feature_imp', feat_imp),\n            ('column_transf', col_transf),\n            ('model', HistGradientBoostingRegressor(**params_hgbr)),\n        ]\n    ).set_output(transform=\"pandas\")\n    return estimator\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/data_science/nodes.py",
+  "parameters": {
+    "data_science.params_hgbr": {
+      "loss": "squared_error",
+      "learning_rate": 0.05,
+      "max_iter": 1000,
+      "max_depth": 7,
+      "categorical_features": [
+        "VendorID",
+        "RatecodeID",
+        "store_and_fwd_flag",
+        "PULocationID",
+        "DOLocationID",
+        "payment_type"
+      ],
+      "random_state": 12
+    }
+  },
+  "run_command": "kedro run --to-nodes='data_science.create_pipeline_model'",
+  "inputs": [
+    "data_science.feat_imp",
+    "data_science.col_transf",
+    "params:data_science.params_hgbr"
+  ],
+  "outputs": [
+    "data_science.model"
+  ]
+}

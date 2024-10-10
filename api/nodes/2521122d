@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "data_engineering.path_to_save_shape": "data/01_raw/"
+  }
+}

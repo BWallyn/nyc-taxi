@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "data_engineering.link_shape": "https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip"
+  }
+}

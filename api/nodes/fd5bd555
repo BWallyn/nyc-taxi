@@ -1,0 +1,15 @@
+{
+  "code": "def compute_metrics(y_train: np.array, pred_train: np.array, y_test: np.array, pred_test: np.array) -> dict:\n    \"\"\"\n    \"\"\"\n    # Compute metrics\n    metrics = {\n        \"RMSE_train\": mean_squared_error(y_true=y_train, y_pred=pred_train, squared=False),\n        \"rmse_valid\": mean_squared_error(y_true=y_test, y_pred=pred_test, squared=False),\n    }\n    return metrics\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/model_evaluation/nodes.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes='model_evaluation.node_metrics'",
+  "inputs": [
+    "y_training",
+    "pred_training",
+    "y_test",
+    "pred_test"
+  ],
+  "outputs": [
+    "dict_metrics"
+  ]
+}

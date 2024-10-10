@@ -1,0 +1,10 @@
+{
+  "code": "def feature_imputer():\n    \"\"\"Create a feature imputer for the missing values\n\n    Returns:\n        feat_imp: Feature imputer element from sklearn\n    \"\"\"\n    feat_imp = ColumnTransformer(\n        transformers=[\n            (\"pass_count\", SimpleImputer(strategy=\"median\"), [\"passenger_count\"]),\n            (\"rate_code\", SimpleImputer(strategy=\"most_frequent\"), [\"RatecodeID\"]),\n            (\"store_flag\", SimpleImputer(strategy=\"most_frequent\"), [\"store_and_fwd_flag\"]),\n            (\"cong_surch\", SimpleImputer(strategy=\"median\"), [\"congestion_surcharge\"]),\n            (\"air_fee\", SimpleImputer(strategy=\"most_frequent\"), [\"airport_fee\"]),\n            (\"passthrough_cols\", \"passthrough\", [\n                \"VendorID\", \"trip_distance\", \"PULocationID\", \"DOLocationID\",\n                \"payment_type\", \"fare_amount\", \"extra\",\n                \"mta_tax\", \"tip_amount\", \"tolls_amount\", \"improvement_surcharge\", \"total_amount\", \"tpep_pickup_datetime_hour\"\n            ])\n        ], remainder='drop', verbose_feature_names_out=False\n    )\n    return feat_imp\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/data_science/nodes.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes='data_science.create_feature_imputer'",
+  "inputs": [],
+  "outputs": [
+    "data_science.feat_imp"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "code": "def merge_airport_fee(df: pd.DataFrame) -> pd.DataFrame:\n    \"\"\"\n    \"\"\"\n    mask_ = df[\"airport_fee\"].isna()\n    df.loc[mask_, 'airport_fee'] = df.loc[mask_, 'Airport_fee']\n    df = df.drop(columns=[\"Airport_fee\"])\n    return df\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/data_science/nodes.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes='data_science.merge_airport_fee_train'",
+  "inputs": [
+    "df_train"
+  ],
+  "outputs": [
+    "data_science.df_train_airport"
+  ]
+}

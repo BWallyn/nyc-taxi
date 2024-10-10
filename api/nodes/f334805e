@@ -1,0 +1,18 @@
+{
+  "code": "def download_between_dates(path_tlc: str, date_start: str, date_end: str) -> pd.DataFrame:\n    \"\"\"Download data of NYC taxi trips between two dates\n\n    Args:\n        path_tlc: Link to the NYC TLC website\n        date_start: Starting month to download data. Format yyyy-mm\n        date_end: Ending month to download data. Format yyyy-mm\n    Returns:\n        df: DataFrame downloaded\n    \"\"\"\n    # Get parameters\n    yyyy_start = int(date_start[:4])\n    mm_start = int(date_start[5:])\n    yyyy_end = int(date_end[:4])\n    mm_end = int(date_end[5:])\n    # Extract data\n    df = download_all_data(link=path_tlc, path_data=\"./data/01_raw\", yyyy_start=yyyy_start, yyyy_end=yyyy_end, mm_start=mm_start, mm_end=mm_end)\n    return df\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/data_engineering/nodes.py",
+  "parameters": {
+    "data_engineering.path_tlc": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_",
+    "data_engineering.date_start": "2023-01",
+    "data_engineering.date_end": "2023-04"
+  },
+  "run_command": "kedro run --to-nodes='data_engineering.node_download_data'",
+  "inputs": [
+    "params:data_engineering.path_tlc",
+    "params:data_engineering.date_start",
+    "params:data_engineering.date_end"
+  ],
+  "outputs": [
+    "data_engineering.merged_data"
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "prepare_data_for_dashboard.path_shape_locations": "data/01_raw/taxi_zones/taxi_zones.shp"
+  }
+}
