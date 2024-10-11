@@ -7,6 +7,7 @@ generated using Kedro 0.19.1
 # =================
 
 # Essential
+import logging
 import numpy as np
 import pandas as pd
 import mlflow
@@ -121,7 +122,6 @@ def create_training_set(df_train: pd.DataFrame, df_valid: pd.DataFrame, y_train:
     return df_training, y_training
 
 
-
 def train_model(
     estimator: Pipeline, df_train: pd.DataFrame, df_valid: pd.DataFrame, y_train: pd.Series, y_valid: pd.Series, params_hgbr: dict,
     api_key: str,
@@ -129,7 +129,9 @@ def train_model(
     """
     """
     # Train the model
+    logging.info("Training the model...")
     estimator.fit(df_train, y_train)
+    logging.info("Model trained")
     # Predict
     pred_train = estimator.predict(df_train)
     pred_valid = estimator.predict(df_valid)
@@ -160,7 +162,8 @@ def create_or_get_mlflow_experiment(
         experiment_id (str): Id of the MLflow experiment
     """
     if experiment_id is not None:
-        return experiment_id,
+        logging.info("Using MLflow experiment id %s", experiment_id)
+        return experiment_id
     else:
         return create_mlflow_experiment(
             experiment_folder, experiment_name
@@ -192,7 +195,9 @@ def train_model_mlflow(
     """
     with mlflow.start_run(experiment_id=experiment_id):
         # Train the model
+        logging.info("Training the model...")
         estimator.fit(df_train, y_train)
+        logging.info("Model trained")
         # Predict
         pred_train = estimator.predict(df_train)
         pred_valid = estimator.predict(df_valid)
