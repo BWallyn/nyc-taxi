@@ -36,7 +36,7 @@ def _log_model_mlflow(model, df: pd.DataFrame) -> None:
     mlflow.sklearn.log_model(
         model,
         "model",
-        input_example=df[model.feature_names_].sample(10, random_state=42)
+        # input_example=df[model.feature_names_].sample(10, random_state=42)
     )
 
 
@@ -55,4 +55,4 @@ def _log_mlflow_parameters(dict_params: dict[str, float]):
     Args:
         dict_params (dict[str, float]): Dict of parameters to log to MLflow
     """
-    mlflow.log_parameters(dict_params)
+    mlflow.log_params(dict_params)
