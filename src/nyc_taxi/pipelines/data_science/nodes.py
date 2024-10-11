@@ -30,6 +30,9 @@ from nyc_taxi.pipelines.data_science.log_mlflow import (
 )
 from nyc_taxi.pipelines.data_science.log_model import log_hgbr_model
 
+# Options
+logger = logging.getLogger(__name__)
+
 
 # ===================
 # ==== FUNCTIONS ====
@@ -129,9 +132,9 @@ def train_model(
     """
     """
     # Train the model
-    logging.info("Training the model...")
+    logger.info("Training the model...")
     estimator.fit(df_train, y_train)
-    logging.info("Model trained")
+    logger.info("Model trained")
     # Predict
     pred_train = estimator.predict(df_train)
     pred_valid = estimator.predict(df_valid)
@@ -162,12 +165,13 @@ def create_or_get_mlflow_experiment(
         experiment_id (str): Id of the MLflow experiment
     """
     if experiment_id is not None:
-        logging.info("Using MLflow experiment id %s", experiment_id)
-        return experiment_id
+        logger.info("Using MLflow experiment id %s", experiment_id)
     else:
-        return create_mlflow_experiment(
+        experiment_id = create_mlflow_experiment(
             experiment_folder, experiment_name
         )
+        logger.info("Creating MLflow experiment %s", experiment_id)
+    return experiment_id
 
 
 def train_model_mlflow(
@@ -195,9 +199,9 @@ def train_model_mlflow(
     """
     with mlflow.start_run(experiment_id=experiment_id):
         # Train the model
-        logging.info("Training the model...")
+        logger.info("Training the model...")
         estimator.fit(df_train, y_train)
-        logging.info("Model trained")
+        logger.info("Model trained")
         # Predict
         pred_train = estimator.predict(df_train)
         pred_valid = estimator.predict(df_valid)
