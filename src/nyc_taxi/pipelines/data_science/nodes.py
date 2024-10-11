@@ -212,7 +212,10 @@ def train_model_mlflow(
         }
         # Log to MLflow
         _log_model_mlflow(estimator, df=df_train)
+        logger.info("Model logged to MLflow")
         _log_mlflow_parameters(dict_params=params_hgbr)
+        logger.info("Parameters logged to MLflow")
         _log_mlflow_metric(metrics)
+        logger.info("Metrics logged to MLflow")
     # Return model trained
     return estimator
