@@ -1,0 +1,679 @@
+{
+  "nodes": [
+    {
+      "id": "f334805e",
+      "name": "node_download_data",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "data_engineering"
+      ],
+      "parameters": {
+        "data_engineering.path_tlc": "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_",
+        "data_engineering.date_start": "2023-01",
+        "data_engineering.date_end": "2023-04"
+      }
+    },
+    {
+      "id": "1c3aff01",
+      "name": "params:data_engineering.path_tlc",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "d5a5a6da",
+      "name": "params:data_engineering.date_start",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "c10e497e",
+      "name": "params:data_engineering.date_end",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "72e32a4a",
+      "name": "data_engineering.merged_data",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "data_engineering"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "3ba46036",
+      "name": "node_download_shape_file",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "data_engineering"
+      ],
+      "parameters": {
+        "data_engineering.path_to_save_shape": "data/01_raw/",
+        "data_engineering.link_shape": "https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip"
+      }
+    },
+    {
+      "id": "2521122d",
+      "name": "params:data_engineering.path_to_save_shape",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "f23061f8",
+      "name": "params:data_engineering.link_shape",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "a2d0667d",
+      "name": "node_split_dataset",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "data_engineering"
+      ],
+      "parameters": {
+        "data_engineering.date_valid_str": "2023-03",
+        "data_engineering.date_test_str": "2023-04"
+      }
+    },
+    {
+      "id": "bbd94a08",
+      "name": "params:data_engineering.date_valid_str",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "57735dd4",
+      "name": "params:data_engineering.date_test_str",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "708c7525",
+      "name": "data_engineering.train_split",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "data_engineering"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "18294727",
+      "name": "data_engineering.valid_split",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "data_engineering"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "7bb57e7c",
+      "name": "data_engineering.test_split",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "data_engineering"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "0dee4ab5",
+      "name": "node_target_test",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "data_engineering"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "9de3704a",
+      "name": "df_test",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__",
+        "data_science"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "data_engineering",
+        "data_science"
+      ],
+      "layer": null,
+      "dataset_type": "pickle.pickle_dataset.PickleDataset",
+      "stats": null
+    },
+    {
+      "id": "f6d9538c",
+      "name": "y_test",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "model_evaluation",
+        "__default__",
+        "data_science"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "data_engineering",
+        "data_science",
+        "model_evaluation"
+      ],
+      "layer": null,
+      "dataset_type": "pandas.csv_dataset.CSVDataset",
+      "stats": null
+    },
+    {
+      "id": "6a92a1d5",
+      "name": "node_target_train",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "data_engineering"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "27e06b17",
+      "name": "df_train",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__",
+        "data_science"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "data_engineering",
+        "data_science"
+      ],
+      "layer": null,
+      "dataset_type": "pickle.pickle_dataset.PickleDataset",
+      "stats": null
+    },
+    {
+      "id": "9ca016a8",
+      "name": "y_train",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__",
+        "data_science"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "data_engineering",
+        "data_science"
+      ],
+      "layer": null,
+      "dataset_type": "pandas.csv_dataset.CSVDataset",
+      "stats": null
+    },
+    {
+      "id": "da696f05",
+      "name": "node_target_valid",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "data_engineering"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "580ae6c5",
+      "name": "df_valid",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__",
+        "data_science"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "data_engineering",
+        "data_science"
+      ],
+      "layer": null,
+      "dataset_type": "pickle.pickle_dataset.PickleDataset",
+      "stats": null
+    },
+    {
+      "id": "81ab3cd5",
+      "name": "y_valid",
+      "tags": [],
+      "pipelines": [
+        "data_engineering",
+        "__default__",
+        "data_science"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "data_engineering",
+        "data_science"
+      ],
+      "layer": null,
+      "dataset_type": "pandas.csv_dataset.CSVDataset",
+      "stats": null
+    },
+    {
+      "id": "data_engineering",
+      "name": "data_engineering",
+      "tags": [],
+      "pipelines": [
+        "data_engineering"
+      ],
+      "type": "modularPipeline",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "6a92a1d5",
+      "target": "27e06b17"
+    },
+    {
+      "source": "f334805e",
+      "target": "72e32a4a"
+    },
+    {
+      "source": "a2d0667d",
+      "target": "708c7525"
+    },
+    {
+      "source": "6a92a1d5",
+      "target": "9ca016a8"
+    },
+    {
+      "source": "data_engineering",
+      "target": "9de3704a"
+    },
+    {
+      "source": "57735dd4",
+      "target": "data_engineering"
+    },
+    {
+      "source": "708c7525",
+      "target": "6a92a1d5"
+    },
+    {
+      "source": "0dee4ab5",
+      "target": "9de3704a"
+    },
+    {
+      "source": "1c3aff01",
+      "target": "data_engineering"
+    },
+    {
+      "source": "f23061f8",
+      "target": "data_engineering"
+    },
+    {
+      "source": "data_engineering",
+      "target": "81ab3cd5"
+    },
+    {
+      "source": "57735dd4",
+      "target": "a2d0667d"
+    },
+    {
+      "source": "2521122d",
+      "target": "data_engineering"
+    },
+    {
+      "source": "bbd94a08",
+      "target": "data_engineering"
+    },
+    {
+      "source": "a2d0667d",
+      "target": "7bb57e7c"
+    },
+    {
+      "source": "data_engineering",
+      "target": "27e06b17"
+    },
+    {
+      "source": "72e32a4a",
+      "target": "a2d0667d"
+    },
+    {
+      "source": "c10e497e",
+      "target": "data_engineering"
+    },
+    {
+      "source": "da696f05",
+      "target": "81ab3cd5"
+    },
+    {
+      "source": "a2d0667d",
+      "target": "18294727"
+    },
+    {
+      "source": "d5a5a6da",
+      "target": "data_engineering"
+    },
+    {
+      "source": "7bb57e7c",
+      "target": "0dee4ab5"
+    },
+    {
+      "source": "data_engineering",
+      "target": "9ca016a8"
+    },
+    {
+      "source": "1c3aff01",
+      "target": "f334805e"
+    },
+    {
+      "source": "bbd94a08",
+      "target": "a2d0667d"
+    },
+    {
+      "source": "c10e497e",
+      "target": "f334805e"
+    },
+    {
+      "source": "d5a5a6da",
+      "target": "f334805e"
+    },
+    {
+      "source": "data_engineering",
+      "target": "f6d9538c"
+    },
+    {
+      "source": "f23061f8",
+      "target": "3ba46036"
+    },
+    {
+      "source": "data_engineering",
+      "target": "580ae6c5"
+    },
+    {
+      "source": "2521122d",
+      "target": "3ba46036"
+    },
+    {
+      "source": "da696f05",
+      "target": "580ae6c5"
+    },
+    {
+      "source": "0dee4ab5",
+      "target": "f6d9538c"
+    },
+    {
+      "source": "18294727",
+      "target": "da696f05"
+    }
+  ],
+  "layers": [],
+  "tags": [],
+  "pipelines": [
+    {
+      "id": "__default__",
+      "name": "__default__"
+    },
+    {
+      "id": "prepare_for_dashboard",
+      "name": "prepare_for_dashboard"
+    },
+    {
+      "id": "model_inference",
+      "name": "model_inference"
+    },
+    {
+      "id": "data_science",
+      "name": "data_science"
+    },
+    {
+      "id": "data_engineering",
+      "name": "data_engineering"
+    },
+    {
+      "id": "model_evaluation",
+      "name": "model_evaluation"
+    }
+  ],
+  "modular_pipelines": {
+    "__root__": {
+      "id": "__root__",
+      "name": "__root__",
+      "inputs": [],
+      "outputs": [],
+      "children": [
+        {
+          "id": "2521122d",
+          "type": "parameters"
+        },
+        {
+          "id": "bbd94a08",
+          "type": "parameters"
+        },
+        {
+          "id": "57735dd4",
+          "type": "parameters"
+        },
+        {
+          "id": "c10e497e",
+          "type": "parameters"
+        },
+        {
+          "id": "f23061f8",
+          "type": "parameters"
+        },
+        {
+          "id": "580ae6c5",
+          "type": "data"
+        },
+        {
+          "id": "81ab3cd5",
+          "type": "data"
+        },
+        {
+          "id": "data_engineering",
+          "type": "modularPipeline"
+        },
+        {
+          "id": "9ca016a8",
+          "type": "data"
+        },
+        {
+          "id": "d5a5a6da",
+          "type": "parameters"
+        },
+        {
+          "id": "9de3704a",
+          "type": "data"
+        },
+        {
+          "id": "f6d9538c",
+          "type": "data"
+        },
+        {
+          "id": "1c3aff01",
+          "type": "parameters"
+        },
+        {
+          "id": "27e06b17",
+          "type": "data"
+        }
+      ]
+    },
+    "data_engineering": {
+      "id": "data_engineering",
+      "name": "data_engineering",
+      "inputs": [
+        "f23061f8",
+        "d5a5a6da",
+        "c10e497e",
+        "2521122d",
+        "57735dd4",
+        "bbd94a08",
+        "1c3aff01"
+      ],
+      "outputs": [
+        "9ca016a8",
+        "81ab3cd5",
+        "9de3704a",
+        "580ae6c5",
+        "f6d9538c",
+        "27e06b17"
+      ],
+      "children": [
+        {
+          "id": "7bb57e7c",
+          "type": "data"
+        },
+        {
+          "id": "3ba46036",
+          "type": "task"
+        },
+        {
+          "id": "da696f05",
+          "type": "task"
+        },
+        {
+          "id": "a2d0667d",
+          "type": "task"
+        },
+        {
+          "id": "72e32a4a",
+          "type": "data"
+        },
+        {
+          "id": "708c7525",
+          "type": "data"
+        },
+        {
+          "id": "f334805e",
+          "type": "task"
+        },
+        {
+          "id": "0dee4ab5",
+          "type": "task"
+        },
+        {
+          "id": "6a92a1d5",
+          "type": "task"
+        },
+        {
+          "id": "18294727",
+          "type": "data"
+        }
+      ]
+    }
+  },
+  "selected_pipeline": "data_engineering"
+}

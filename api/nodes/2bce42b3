@@ -1,0 +1,12 @@
+{
+  "code": "def get_representative_points(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:\n    \"\"\"Get a representative point of each polygon\n\n    Args:\n        gdf: Input geopandas dataframe\n    Returns:\n        gdf: Output geopandas dataframe with representative point\n    \"\"\"\n    gdf['rep_point'] = gdf['geometry'].representative_point()\n    return gdf\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/prepare_for_dashboard/nodes.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes='prepare_data_for_dashboard.Add_representative_points_polygon'",
+  "inputs": [
+    "prepare_data_for_dashboard.gdf_crs_changed"
+  ],
+  "outputs": [
+    "prepare_data_for_dashboard.gdf_w_point"
+  ]
+}

@@ -1,0 +1,591 @@
+{
+  "nodes": [
+    {
+      "id": "18a0d458",
+      "name": "Load_geo_dataframe",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "parameters": {
+        "prepare_data_for_dashboard.path_shape_locations": "data/01_raw/taxi_zones/taxi_zones.shp"
+      }
+    },
+    {
+      "id": "d57c6925",
+      "name": "params:prepare_data_for_dashboard.path_shape_locations",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "452980aa",
+      "name": "prepare_data_for_dashboard.gdf_shape_locations",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "55fcf3fe",
+      "name": "Change_crs_to_4326",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "641799d8",
+      "name": "prepare_data_for_dashboard.gdf_crs_changed",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "2bce42b3",
+      "name": "Add_representative_points_polygon",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "9f1ffd36",
+      "name": "prepare_data_for_dashboard.gdf_w_point",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "a22667e5",
+      "name": "Add_longitude_and_latitude",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "371064e5",
+      "name": "prepare_data_for_dashboard.gdf_w_lon_lat",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "f4e91d73",
+      "name": "df_training",
+      "tags": [],
+      "pipelines": [
+        "model_inference",
+        "prepare_for_dashboard",
+        "__default__",
+        "data_science"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "model_inference",
+        "prepare_data_for_dashboard",
+        "data_science"
+      ],
+      "layer": null,
+      "dataset_type": "pickle.pickle_dataset.PickleDataset",
+      "stats": null
+    },
+    {
+      "id": "758ec78f",
+      "name": "y_training",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "model_evaluation",
+        "__default__",
+        "data_science"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard",
+        "data_science",
+        "model_evaluation"
+      ],
+      "layer": null,
+      "dataset_type": "pandas.csv_dataset.CSVDataset",
+      "stats": null
+    },
+    {
+      "id": "de115666",
+      "name": "Add_duration_to_dataset",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "5da7f3d4",
+      "name": "prepare_data_for_dashboard.df_training_w_duration",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "ff1db8b5",
+      "name": "Aggregate_by_location_datetime",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "4300c6c7",
+      "name": "prepare_data_for_dashboard.df_training_group_location_date",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "d05a781c",
+      "name": "Aggregate_by_location_day_hour",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "aded778f",
+      "name": "prepare_data_for_dashboard.df_training_location_day_hour",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "0b919c1f",
+      "name": "Add_geographical_info",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "bed9d9c1",
+      "name": "df_training_location_date_w_zone",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "layer": null,
+      "dataset_type": "pickle.pickle_dataset.PickleDataset",
+      "stats": null
+    },
+    {
+      "id": "926ce67c",
+      "name": "Add_zone_name",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "92739a6f",
+      "name": "gdf_training_location_date_w_geo",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "prepare_data_for_dashboard"
+      ],
+      "layer": null,
+      "dataset_type": "geopandas.geojson_dataset.GeoJSONDataset",
+      "stats": null
+    },
+    {
+      "id": "prepare_data_for_dashboard",
+      "name": "prepare_data_for_dashboard",
+      "tags": [],
+      "pipelines": [
+        "prepare_for_dashboard"
+      ],
+      "type": "modularPipeline",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "758ec78f",
+      "target": "prepare_data_for_dashboard"
+    },
+    {
+      "source": "ff1db8b5",
+      "target": "4300c6c7"
+    },
+    {
+      "source": "f4e91d73",
+      "target": "de115666"
+    },
+    {
+      "source": "d57c6925",
+      "target": "18a0d458"
+    },
+    {
+      "source": "55fcf3fe",
+      "target": "641799d8"
+    },
+    {
+      "source": "758ec78f",
+      "target": "de115666"
+    },
+    {
+      "source": "aded778f",
+      "target": "926ce67c"
+    },
+    {
+      "source": "0b919c1f",
+      "target": "bed9d9c1"
+    },
+    {
+      "source": "prepare_data_for_dashboard",
+      "target": "92739a6f"
+    },
+    {
+      "source": "prepare_data_for_dashboard",
+      "target": "bed9d9c1"
+    },
+    {
+      "source": "371064e5",
+      "target": "0b919c1f"
+    },
+    {
+      "source": "926ce67c",
+      "target": "92739a6f"
+    },
+    {
+      "source": "2bce42b3",
+      "target": "9f1ffd36"
+    },
+    {
+      "source": "9f1ffd36",
+      "target": "a22667e5"
+    },
+    {
+      "source": "5da7f3d4",
+      "target": "d05a781c"
+    },
+    {
+      "source": "d05a781c",
+      "target": "aded778f"
+    },
+    {
+      "source": "452980aa",
+      "target": "55fcf3fe"
+    },
+    {
+      "source": "641799d8",
+      "target": "2bce42b3"
+    },
+    {
+      "source": "18a0d458",
+      "target": "452980aa"
+    },
+    {
+      "source": "5da7f3d4",
+      "target": "ff1db8b5"
+    },
+    {
+      "source": "4300c6c7",
+      "target": "0b919c1f"
+    },
+    {
+      "source": "f4e91d73",
+      "target": "prepare_data_for_dashboard"
+    },
+    {
+      "source": "371064e5",
+      "target": "926ce67c"
+    },
+    {
+      "source": "a22667e5",
+      "target": "371064e5"
+    },
+    {
+      "source": "de115666",
+      "target": "5da7f3d4"
+    },
+    {
+      "source": "d57c6925",
+      "target": "prepare_data_for_dashboard"
+    }
+  ],
+  "layers": [],
+  "tags": [],
+  "pipelines": [
+    {
+      "id": "__default__",
+      "name": "__default__"
+    },
+    {
+      "id": "prepare_for_dashboard",
+      "name": "prepare_for_dashboard"
+    },
+    {
+      "id": "model_inference",
+      "name": "model_inference"
+    },
+    {
+      "id": "data_science",
+      "name": "data_science"
+    },
+    {
+      "id": "data_engineering",
+      "name": "data_engineering"
+    },
+    {
+      "id": "model_evaluation",
+      "name": "model_evaluation"
+    }
+  ],
+  "modular_pipelines": {
+    "__root__": {
+      "id": "__root__",
+      "name": "__root__",
+      "inputs": [],
+      "outputs": [],
+      "children": [
+        {
+          "id": "bed9d9c1",
+          "type": "data"
+        },
+        {
+          "id": "prepare_data_for_dashboard",
+          "type": "modularPipeline"
+        },
+        {
+          "id": "758ec78f",
+          "type": "data"
+        },
+        {
+          "id": "d57c6925",
+          "type": "parameters"
+        },
+        {
+          "id": "f4e91d73",
+          "type": "data"
+        },
+        {
+          "id": "92739a6f",
+          "type": "data"
+        }
+      ]
+    },
+    "prepare_data_for_dashboard": {
+      "id": "prepare_data_for_dashboard",
+      "name": "prepare_data_for_dashboard",
+      "inputs": [
+        "758ec78f",
+        "f4e91d73",
+        "d57c6925"
+      ],
+      "outputs": [
+        "bed9d9c1",
+        "92739a6f"
+      ],
+      "children": [
+        {
+          "id": "18a0d458",
+          "type": "task"
+        },
+        {
+          "id": "d05a781c",
+          "type": "task"
+        },
+        {
+          "id": "926ce67c",
+          "type": "task"
+        },
+        {
+          "id": "de115666",
+          "type": "task"
+        },
+        {
+          "id": "9f1ffd36",
+          "type": "data"
+        },
+        {
+          "id": "2bce42b3",
+          "type": "task"
+        },
+        {
+          "id": "aded778f",
+          "type": "data"
+        },
+        {
+          "id": "a22667e5",
+          "type": "task"
+        },
+        {
+          "id": "0b919c1f",
+          "type": "task"
+        },
+        {
+          "id": "641799d8",
+          "type": "data"
+        },
+        {
+          "id": "452980aa",
+          "type": "data"
+        },
+        {
+          "id": "4300c6c7",
+          "type": "data"
+        },
+        {
+          "id": "5da7f3d4",
+          "type": "data"
+        },
+        {
+          "id": "55fcf3fe",
+          "type": "task"
+        },
+        {
+          "id": "371064e5",
+          "type": "data"
+        },
+        {
+          "id": "ff1db8b5",
+          "type": "task"
+        }
+      ]
+    }
+  },
+  "selected_pipeline": "prepare_for_dashboard"
+}

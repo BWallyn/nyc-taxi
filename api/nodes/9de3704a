@@ -1,0 +1,8 @@
+{
+  "type": "pickle.pickle_dataset.PickleDataset",
+  "filepath": "/home/runner/work/nyc-taxi/nyc-taxi/data/03_primary/df_test.pkl",
+  "run_command": "kedro run --to-outputs=df_test",
+  "preview": null,
+  "preview_type": null,
+  "stats": null
+}

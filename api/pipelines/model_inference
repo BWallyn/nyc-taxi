@@ -1,0 +1,269 @@
+{
+  "nodes": [
+    {
+      "id": "ae94108d",
+      "name": "df_test_hour",
+      "tags": [],
+      "pipelines": [
+        "model_inference",
+        "__default__",
+        "data_science"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "model_inference",
+        "data_science"
+      ],
+      "layer": null,
+      "dataset_type": "pickle.pickle_dataset.PickleDataset",
+      "stats": null
+    },
+    {
+      "id": "f4e91d73",
+      "name": "df_training",
+      "tags": [],
+      "pipelines": [
+        "model_inference",
+        "prepare_for_dashboard",
+        "__default__",
+        "data_science"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "model_inference",
+        "prepare_data_for_dashboard",
+        "data_science"
+      ],
+      "layer": null,
+      "dataset_type": "pickle.pickle_dataset.PickleDataset",
+      "stats": null
+    },
+    {
+      "id": "761d7c9b",
+      "name": "model_trained",
+      "tags": [],
+      "pipelines": [
+        "model_inference",
+        "__default__",
+        "data_science"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "model_inference",
+        "data_science"
+      ],
+      "layer": null,
+      "dataset_type": "pickle.pickle_dataset.PickleDataset",
+      "stats": null
+    },
+    {
+      "id": "92f0977b",
+      "name": "node_model_predict_test",
+      "tags": [],
+      "pipelines": [
+        "model_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "model_inference"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "b137287f",
+      "name": "pred_test",
+      "tags": [],
+      "pipelines": [
+        "model_inference",
+        "__default__",
+        "model_evaluation"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "model_inference",
+        "model_evaluation"
+      ],
+      "layer": null,
+      "dataset_type": "pandas.csv_dataset.CSVDataset",
+      "stats": null
+    },
+    {
+      "id": "aed46921",
+      "name": "node_model_predict_training",
+      "tags": [],
+      "pipelines": [
+        "model_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "model_inference"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "1f3cbd76",
+      "name": "pred_training",
+      "tags": [],
+      "pipelines": [
+        "model_inference",
+        "__default__",
+        "model_evaluation"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "model_inference",
+        "model_evaluation"
+      ],
+      "layer": null,
+      "dataset_type": "pandas.csv_dataset.CSVDataset",
+      "stats": null
+    },
+    {
+      "id": "model_inference",
+      "name": "model_inference",
+      "tags": [],
+      "pipelines": [
+        "model_inference"
+      ],
+      "type": "modularPipeline",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "model_inference",
+      "target": "1f3cbd76"
+    },
+    {
+      "source": "aed46921",
+      "target": "1f3cbd76"
+    },
+    {
+      "source": "761d7c9b",
+      "target": "92f0977b"
+    },
+    {
+      "source": "model_inference",
+      "target": "b137287f"
+    },
+    {
+      "source": "ae94108d",
+      "target": "model_inference"
+    },
+    {
+      "source": "ae94108d",
+      "target": "92f0977b"
+    },
+    {
+      "source": "f4e91d73",
+      "target": "aed46921"
+    },
+    {
+      "source": "761d7c9b",
+      "target": "aed46921"
+    },
+    {
+      "source": "f4e91d73",
+      "target": "model_inference"
+    },
+    {
+      "source": "92f0977b",
+      "target": "b137287f"
+    },
+    {
+      "source": "761d7c9b",
+      "target": "model_inference"
+    }
+  ],
+  "layers": [],
+  "tags": [],
+  "pipelines": [
+    {
+      "id": "__default__",
+      "name": "__default__"
+    },
+    {
+      "id": "prepare_for_dashboard",
+      "name": "prepare_for_dashboard"
+    },
+    {
+      "id": "model_inference",
+      "name": "model_inference"
+    },
+    {
+      "id": "data_science",
+      "name": "data_science"
+    },
+    {
+      "id": "data_engineering",
+      "name": "data_engineering"
+    },
+    {
+      "id": "model_evaluation",
+      "name": "model_evaluation"
+    }
+  ],
+  "modular_pipelines": {
+    "__root__": {
+      "id": "__root__",
+      "name": "__root__",
+      "inputs": [],
+      "outputs": [],
+      "children": [
+        {
+          "id": "ae94108d",
+          "type": "data"
+        },
+        {
+          "id": "b137287f",
+          "type": "data"
+        },
+        {
+          "id": "model_inference",
+          "type": "modularPipeline"
+        },
+        {
+          "id": "f4e91d73",
+          "type": "data"
+        },
+        {
+          "id": "761d7c9b",
+          "type": "data"
+        },
+        {
+          "id": "1f3cbd76",
+          "type": "data"
+        }
+      ]
+    },
+    "model_inference": {
+      "id": "model_inference",
+      "name": "model_inference",
+      "inputs": [
+        "761d7c9b",
+        "ae94108d",
+        "f4e91d73"
+      ],
+      "outputs": [
+        "b137287f",
+        "1f3cbd76"
+      ],
+      "children": [
+        {
+          "id": "92f0977b",
+          "type": "task"
+        },
+        {
+          "id": "aed46921",
+          "type": "task"
+        }
+      ]
+    }
+  },
+  "selected_pipeline": "model_inference"
+}

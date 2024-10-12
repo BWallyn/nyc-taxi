@@ -1,0 +1,15 @@
+{
+  "code": "def create_hour_feat(df: pd.DataFrame, col_datetime: str) -> pd.DataFrame:\n    \"\"\"Create hour feat from datetime column\n\n    Args:\n        df: DataFrame\n        col_datetime: Name of the datetime column\n    \"\"\"\n    df[f\"{col_datetime}_hour\"] = df[col_datetime].dt.hour\n    return df\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/data_science/feature_engineering.py",
+  "parameters": {
+    "data_science.col_date_hour": "tpep_pickup_datetime"
+  },
+  "run_command": "kedro run --to-nodes='data_science.create_hour_train_set'",
+  "inputs": [
+    "data_science.df_train_airport",
+    "params:data_science.col_date_hour"
+  ],
+  "outputs": [
+    "data_science.df_train_hour"
+  ]
+}

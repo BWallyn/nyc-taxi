@@ -1,0 +1,13 @@
+{
+  "code": "def model_predict(df: pd.DataFrame, model: Pipeline) -> pd.Series:\n    \"\"\"\n    \"\"\"\n    pred = model.predict(df)\n    pred_df = pd.Series(pred, index=df.index)\n    return pred_df\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/model_inference/nodes.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes='model_inference.node_model_predict_test'",
+  "inputs": [
+    "df_test_hour",
+    "model_trained"
+  ],
+  "outputs": [
+    "pred_test"
+  ]
+}

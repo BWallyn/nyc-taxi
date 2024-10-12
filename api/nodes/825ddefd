@@ -1,0 +1,34 @@
+{
+  "code": "def train_model_mlflow(\n    experiment_id: str,\n    estimator: Pipeline, df_train: pd.DataFrame, df_valid: pd.DataFrame,\n    y_train: pd.DataFrame, y_valid: pd.DataFrame,\n    params_hgbr: dict[str, Any],\n) -> Pipeline:\n    \"\"\"Train a model and log to MLflow the info about the estimator:\n    - Train a model defined as a scikit-learn pipeline\n    - Predict on the train and validation sets\n    - Compute metrics on both datasets\n    - Log metrics, model parameters and model to MLflow\n\n    Args:\n        experiment_id (str): Id of the MLflow experiment\n        estimator (Pipeline): Scikit learn pipeline\n        df_train (pd.DataFrame): Train dataframe\n        df_valid (pd.DataFrame): Validation dataframe\n        y_train (pd.DataFrame): Target of the train dataframe\n        y_valid (pd.DataFrame): Target of the validation dataframe\n        params_hgbr (dict[str, Any]): Parameters of the HistGradientBoosting model\n    Returns:\n        estimator (Pipeline): Trained estimator\n    \"\"\"\n    with mlflow.start_run(experiment_id=experiment_id):\n        # Train the model\n        logger.info(\"Training the model...\")\n        estimator.fit(df_train, y_train)\n        logger.info(\"Model trained\")\n        # Predict\n        pred_train = estimator.predict(df_train)\n        pred_valid = estimator.predict(df_valid)\n        # Compute metrics\n        logger.info(\"Compute metrics\")\n        metrics = {\n            \"RMSE_train\": root_mean_squared_error(y_true=y_train, y_pred=pred_train),\n            \"RMSE_valid\": root_mean_squared_error(y_true=y_valid, y_pred=pred_valid),\n        }\n        # Log to MLflow\n        _log_model_mlflow(estimator, df=df_train)\n        logger.info(\"Model logged to MLflow\")\n        _log_mlflow_parameters(dict_params=params_hgbr)\n        logger.info(\"Parameters logged to MLflow\")\n        _log_mlflow_metric(metrics)\n        logger.info(\"Metrics logged to MLflow\")\n    # Return model trained\n    return estimator\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/data_science/nodes.py",
+  "parameters": {
+    "data_science.params_hgbr": {
+      "loss": "squared_error",
+      "learning_rate": 0.05,
+      "max_iter": 1000,
+      "max_depth": 7,
+      "categorical_features": [
+        "VendorID",
+        "RatecodeID",
+        "store_and_fwd_flag",
+        "PULocationID",
+        "DOLocationID",
+        "payment_type"
+      ],
+      "random_state": 12
+    }
+  },
+  "run_command": "kedro run --to-nodes='data_science.train_model_and_log_to_MLflow'",
+  "inputs": [
+    "data_science.experiment_id",
+    "data_science.model",
+    "df_training",
+    "df_test_hour",
+    "y_training",
+    "y_test",
+    "params:data_science.params_hgbr"
+  ],
+  "outputs": [
+    "model_trained"
+  ]
+}

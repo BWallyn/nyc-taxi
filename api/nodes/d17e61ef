@@ -1,0 +1,18 @@
+{
+  "code": "def create_or_get_mlflow_experiment(\n    experiment_id: Optional[str]=None,\n    experiment_folder: Optional[str]=None,\n    experiment_name: Optional[str]=None,\n) -> str:\n    \"\"\"Create an MLflow experiment or use an existing one.\n    If experiment_id is not None, use the MLflow experiment of the experiment_id,\n    otherwise, create a MLflow experiment.\n\n    Args:\n        experiment_id (Optional[str]): Experiment id if exists to reuse one\n        experiment_folder (Optional[str]): Folder where to create the experiment\n        experiment_name (Optional[str]): Name of the MLflow experiment\n    Returns:\n        experiment_id (str): Id of the MLflow experiment\n    \"\"\"\n    if experiment_id is not None:\n        logger.info(\"Using MLflow experiment id %s\", experiment_id)\n    else:\n        experiment_id = create_mlflow_experiment(\n            experiment_folder, experiment_name\n        )\n        logger.info(\"Creating MLflow experiment %s\", experiment_id)\n    return experiment_id\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/data_science/nodes.py",
+  "parameters": {
+    "data_science.experiment_id": 714642336027545834,
+    "data_science.experiment_folder": "../mlflow/",
+    "data_science.experiment_name": "predict_trip"
+  },
+  "run_command": "kedro run --to-nodes='data_science.create_or_get_MLflow_experiment'",
+  "inputs": [
+    "params:data_science.experiment_id",
+    "params:data_science.experiment_folder",
+    "params:data_science.experiment_name"
+  ],
+  "outputs": [
+    "data_science.experiment_id"
+  ]
+}

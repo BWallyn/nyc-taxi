@@ -1,0 +1,14 @@
+{
+  "code": "def download_zones_shapefile(\n    path_to_save_shape: str, link_shape: str='https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip'\n) -> None:\n    \"\"\"\n    \"\"\"\n    r = requests.get(link_shape)\n    z = zipfile.ZipFile(io.BytesIO(r.content))\n    z.extractall(path_to_save_shape)\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/data_engineering/nodes.py",
+  "parameters": {
+    "data_engineering.path_to_save_shape": "data/01_raw/",
+    "data_engineering.link_shape": "https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip"
+  },
+  "run_command": "kedro run --to-nodes='data_engineering.node_download_shape_file'",
+  "inputs": [
+    "params:data_engineering.path_to_save_shape",
+    "params:data_engineering.link_shape"
+  ],
+  "outputs": []
+}

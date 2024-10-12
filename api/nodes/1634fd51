@@ -1,0 +1,19 @@
+{
+  "parameters": {
+    "data_science.params_hgbr": {
+      "loss": "squared_error",
+      "learning_rate": 0.05,
+      "max_iter": 1000,
+      "max_depth": 7,
+      "categorical_features": [
+        "VendorID",
+        "RatecodeID",
+        "store_and_fwd_flag",
+        "PULocationID",
+        "DOLocationID",
+        "payment_type"
+      ],
+      "random_state": 12
+    }
+  }
+}

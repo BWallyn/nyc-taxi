@@ -1,0 +1,19 @@
+{
+  "code": "def split_train_val_test(df: pd.DataFrame, date_valid_str: str, date_test_str: str, col_date: str=\"tpep_pickup_datetime\") -> list[pd.DataFrame]:\n    \"\"\"Split the dataset into train, validation and test sets.\n\n    Args:\n        df: Entire dataframe\n    \"\"\"\n    # Options\n    date_valid = pd.to_datetime(date_valid_str, errors=\"raise\", format=\"%Y-%m\")\n    date_test = pd.to_datetime(date_test_str, errors=\"raise\", format=\"%Y-%m\")\n    # Select data\n    df_train = df.loc[df[col_date] < date_valid]\n    df_valid = df.loc[(df[col_date] >= date_valid) & (df[col_date] < date_test)]\n    df_test = df.loc[df[col_date] >= date_test]\n    return df_train, df_valid, df_test\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/data_engineering/nodes.py",
+  "parameters": {
+    "data_engineering.date_valid_str": "2023-03",
+    "data_engineering.date_test_str": "2023-04"
+  },
+  "run_command": "kedro run --to-nodes='data_engineering.node_split_dataset'",
+  "inputs": [
+    "data_engineering.merged_data",
+    "params:data_engineering.date_valid_str",
+    "params:data_engineering.date_test_str"
+  ],
+  "outputs": [
+    "data_engineering.train_split",
+    "data_engineering.valid_split",
+    "data_engineering.test_split"
+  ]
+}

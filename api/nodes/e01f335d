@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "data_science.col_date_hour": "tpep_pickup_datetime"
+  }
+}

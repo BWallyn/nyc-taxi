@@ -1,0 +1,12 @@
+{
+  "code": "def aggregate_by_location_dayofweek_hour(df: pd.DataFrame) -> pd.DataFrame:\n    \"\"\"\n    \"\"\"\n    # Select only recent years\n    df = df.loc[df['tpep_pickup_datetime'] > pd.to_datetime('2023-01-01')]\n    # Create features about the date and hour\n    df = df.assign(\n        pickup_dayofweek = df['tpep_pickup_datetime'].dt.dayofweek,\n        pickup_hour = df['tpep_pickup_datetime'].dt.hour\n    )\n    df.drop(columns=['tpep_pickup_datetime'], inplace=True)\n    # Group by pickup location, dayofweek and hour\n    df_group = df.groupby(by=[\n        'PULocationID', 'pickup_dayofweek', 'pickup_hour'\n    ]).agg(dict_aggregate())\n    df_group = df_group.rename(columns={'VendorID': 'n_trips'})\n    df_group = df_group.reset_index(drop=False)\n    # Replace values dayofweek as str\n    dict_dayofweek_int_to_str = {\n        0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday',\n        4: 'Friday', 5: 'Saturday', 6: 'Sunday'\n    }\n    df_group = df_group.replace({'pickup_dayofweek': dict_dayofweek_int_to_str})\n    return df_group\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/prepare_for_dashboard/nodes.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes='prepare_data_for_dashboard.Aggregate_by_location_day_hour'",
+  "inputs": [
+    "prepare_data_for_dashboard.df_training_w_duration"
+  ],
+  "outputs": [
+    "prepare_data_for_dashboard.df_training_location_day_hour"
+  ]
+}

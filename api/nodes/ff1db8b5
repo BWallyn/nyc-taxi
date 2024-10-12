@@ -1,0 +1,12 @@
+{
+  "code": "def aggregate_by_location_hour(df: pd.DataFrame) -> pd.DataFrame:\n    \"\"\"Aggregate the dataframe by location and hour\n\n    Args:\n        df (pd.DataFrame): Input dataframe\n    Returns:\n        df_group (pd.DataFrame): Output dataframe\n    \"\"\"\n    df = df.loc[df['tpep_pickup_datetime'] > pd.to_datetime('2023-01-01')]\n    df = df.assign(\n        pickup_day = df['tpep_pickup_datetime'].dt.date,\n        pickup_hour = df['tpep_pickup_datetime'].dt.hour\n    )\n    df.drop(columns=['tpep_pickup_datetime'], inplace=True)\n    df_group = df.groupby(by=[\n        'PULocationID', 'pickup_day', 'pickup_hour'\n    ]).agg(dict_aggregate())\n    df_group = df_group.rename(columns={'VendorID': 'n_trips'})\n    df_group = df_group.reset_index(drop=False)\n    df_group['pickup_day'] = pd.to_datetime(df_group['pickup_day'])\n    df_group['pickup_datetime'] = pd.to_datetime(\n        df_group['pickup_day'].dt.strftime('%Y-%m-%d') + ' ' + df_group['pickup_hour'].astype(str), format='%Y-%m-%d %H'\n    )\n    df_group.drop(columns=['pickup_day', 'pickup_hour'])\n    return df_group\n",
+  "filepath": "nyc-taxi/src/nyc_taxi/pipelines/prepare_for_dashboard/nodes.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes='prepare_data_for_dashboard.Aggregate_by_location_datetime'",
+  "inputs": [
+    "prepare_data_for_dashboard.df_training_w_duration"
+  ],
+  "outputs": [
+    "prepare_data_for_dashboard.df_training_group_location_date"
+  ]
+}

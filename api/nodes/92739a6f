@@ -1,0 +1,8 @@
+{
+  "type": "geopandas.geojson_dataset.GeoJSONDataset",
+  "filepath": "/home/runner/work/nyc-taxi/nyc-taxi/data/08_reporting/gdf_training_group_location_datetime_w_geo.geojson",
+  "run_command": "kedro run --to-outputs=gdf_training_location_date_w_geo",
+  "preview": null,
+  "preview_type": null,
+  "stats": null
+}
