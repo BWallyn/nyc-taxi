@@ -7,6 +7,7 @@ generated using Kedro 0.19.1
 # =================
 
 # Essential
+import logging
 import numpy as np
 import pandas as pd
 import mlflow
@@ -28,6 +29,9 @@ from nyc_taxi.pipelines.data_science.log_mlflow import (
     _log_mlflow_parameters
 )
 from nyc_taxi.pipelines.data_science.log_model import log_hgbr_model
+
+# Options
+logger = logging.getLogger(__name__)
 
 
 # ===================
@@ -121,7 +125,6 @@ def create_training_set(df_train: pd.DataFrame, df_valid: pd.DataFrame, y_train:
     return df_training, y_training
 
 
-
 def train_model(
     estimator: Pipeline, df_train: pd.DataFrame, df_valid: pd.DataFrame, y_train: pd.Series, y_valid: pd.Series, params_hgbr: dict,
     api_key: str,
@@ -129,7 +132,9 @@ def train_model(
     """
     """
     # Train the model
+    logger.info("Training the model...")
     estimator.fit(df_train, y_train)
+    logger.info("Model trained")
     # Predict
     pred_train = estimator.predict(df_train)
     pred_valid = estimator.predict(df_valid)
@@ -160,11 +165,13 @@ def create_or_get_mlflow_experiment(
         experiment_id (str): Id of the MLflow experiment
     """
     if experiment_id is not None:
-        return experiment_id,
+        logger.info("Using MLflow experiment id %s", experiment_id)
     else:
-        return create_mlflow_experiment(
+        experiment_id = create_mlflow_experiment(
             experiment_folder, experiment_name
         )
+        logger.info("Creating MLflow experiment %s", experiment_id)
+    return experiment_id
 
 
 def train_model_mlflow(
@@ -192,18 +199,24 @@ def train_model_mlflow(
     """
     with mlflow.start_run(experiment_id=experiment_id):
         # Train the model
+        logger.info("Training the model...")
         estimator.fit(df_train, y_train)
+        logger.info("Model trained")
         # Predict
         pred_train = estimator.predict(df_train)
         pred_valid = estimator.predict(df_valid)
         # Compute metrics
+        logger.info("Compute metrics")
         metrics = {
             "RMSE_train": root_mean_squared_error(y_true=y_train, y_pred=pred_train),
             "RMSE_valid": root_mean_squared_error(y_true=y_valid, y_pred=pred_valid),
         }
         # Log to MLflow
         _log_model_mlflow(estimator, df=df_train)
+        logger.info("Model logged to MLflow")
         _log_mlflow_parameters(dict_params=params_hgbr)
+        logger.info("Parameters logged to MLflow")
         _log_mlflow_metric(metrics)
+        logger.info("Metrics logged to MLflow")
     # Return model trained
     return estimator
