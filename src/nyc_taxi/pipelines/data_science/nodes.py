@@ -206,6 +206,7 @@ def train_model_mlflow(
         pred_train = estimator.predict(df_train)
         pred_valid = estimator.predict(df_valid)
         # Compute metrics
+        logger.info("Compute metrics")
         metrics = {
             "RMSE_train": root_mean_squared_error(y_true=y_train, y_pred=pred_train),
             "RMSE_valid": root_mean_squared_error(y_true=y_valid, y_pred=pred_valid),
